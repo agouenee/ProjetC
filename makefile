@@ -25,7 +25,7 @@ FLAGS = -W -Wall -ansi -pedantic
 # Options de l'édition des liens
 LDFLAGS =
 # Nom de l'exécutable à générer
-EXEC = hello
+EXEC = bin/hello
 # Liste des fichiers sources du projet
 SRC = src/hello.c src/main.c
 # Liste des fichiers objets
@@ -37,7 +37,7 @@ all: $(EXEC)
 
 # Génération de l'exécutable hello, qui dépend des objets hello.o et main.o
 hello: $(OBJ)
-	$(CC) -o $@ $^
+	$(CC) -o $(EXEC) $^
 #hello: hello.o main.o
 	#gcc -o hello hello.o main.o
 
