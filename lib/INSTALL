@@ -1,0 +1,62 @@
+Pour installer cette bibliotheque realiser ces etapes dans l'ordre
+
+INSTALL
+
+1)	Telecharger sur 
+    http://igm.univ-mlv.fr/~biri/Enseignement/IMAC1/Donnees/glimagimp.tgz
+    la bibliotheque
+2)	Déplacer la dans un repertoire quelconque
+		Exemple :
+		$ mkdir ~/LibImagimp
+		$ mv glimagimp.tgz ~/LibImagimp
+3)	Se deplacer dans le repertoire et décompresser l'archive
+		$ cd ~/LibImagimp
+		$ tar -xzvf glimagimp.tgz
+4)	Lancer le script d'installation
+		$ . ./install.sh
+
+TEST
+
+1)	Dans le repertoire d'installation de la bibliotheque, se decaller 
+	sur le répertoire sample
+		$ cd sample
+2)	Compilez et executez le test
+		$ ./sample
+
+INSTRUCTION POUR L'UTILISATION
+
+	Il est important que la variable d'environnement LD_LIBRARY_PATH soit 
+	correctement définie. Elle permet aux programmes de relier leurs appels
+	à fonction aux bonnes bibliotheques installées sur la machine.
+	N'hésitez pas à regarder le script install.sh pour comprendre
+	comment redéfinir cette variable d'environnement.
+
+	La compilation de votre programme devra se faire avec l'option
+	-lglimagimp
+	et l'option
+	-L<repertoire_lib_glimagimp>
+	ou <repertoire_lib_glimagimp> est le repertoire lib de glimagimp
+
+INSTRUCTION POUR LA COMPILATION
+
+Prérequis :
+	La bibliothèque utilise les bibliothèques suivantes : OpenGL (dev) 
+	et Freeglut (dev aussi)
+	La version de Glut testée freeglut 2.6.0.
+	Essayez d'utiliser la même bibliothèque.
+	Ces deux bibliothèques doivent être installées sur votre système d'exploitation.
+
+1)	Récuperer l'archive glimagimp_src.tgz (à télécharger ou à demander auprès de M.Biri)
+2)	Deplacer la dans un repertoire quelconque
+		Exemple :
+		$ mkdir ~/LibImagimp
+		$ mv glimagimp_src.tgz ~/LibImagimp
+3)	Se deplacer dans le repertoire
+		$ cd ~/LibImagimp
+		$ tar -xzvf glimagimp_src.tgz
+4)	Compiler la bibliothèque :
+		$ make
+5)	Lancer le script d'installation
+		$ . ./install.sh
+
+La bibliothèque devrait être installée. Vous pouvez la tester (voir partie TEST)
