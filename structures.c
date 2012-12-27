@@ -1,7 +1,10 @@
 typedef struct Image {
-	unsigned int height;
-	unsigned int width;
-}Image;
+    unsigned int type;
+    unsigned int height;
+    unsigned int width;
+    unsigned int max;
+    unsigned char* pixel;
+} Image;
 
 typedef struct Calque {
 	Image* source;
