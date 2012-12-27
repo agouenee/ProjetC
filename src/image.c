@@ -25,7 +25,7 @@ int openImage(char* path, Image* img) {
     // Ouverture fichier (r: lecture seule)
     FILE* file = fopen(path, "r");
     if(file == NULL) {
-        // ERREUR OUVERTURE FICHIER
+        // Erreur ouverture fichier
         return 0;
     }
     // Création d'une structure de type Image
@@ -67,6 +67,7 @@ int openImage(char* path, Image* img) {
             }
         }
     }
+
     //fflush(stdin);
     fclose(file);
     return 1;

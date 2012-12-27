@@ -13,7 +13,10 @@
 
 int main(void) {
     // Ouverture image
-	char* path = "../images/portugal.ppm";
+    char* path = (char*) malloc(sizeof(char)*22);
+    printf("Saisir le chemin du fichier à ouvrir (ex: ../images/portugal.ppm) :\n");
+    scanf("%s", path);
+
     Image* img = (Image*) malloc(sizeof(Image));
     if(img == NULL) {
         printf("Problème allocation mémoire structure image.\n");
