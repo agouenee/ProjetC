@@ -13,7 +13,7 @@ largeur
 hauteur
 valeur maximale pour un niveau de couleur (généralement 255)
 Pixels de l'image
-************************************************************/
+*************************************************************/
 
 #include <string.h>
 #include <stdio.h>
