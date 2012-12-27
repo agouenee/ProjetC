@@ -13,9 +13,11 @@
 
 int main(void) {
     // Ouverture image
-    char* path = (char*) malloc(sizeof(char)*22);
-    printf("Saisir le chemin du fichier à ouvrir (ex: ../images/portugal.ppm) :\n");
-    scanf("%s", path);
+    char* fileName = (char*) malloc(sizeof(char)*22);
+    char path[100];
+    printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm) :\n");
+    scanf("%s", fileName);
+    sprintf(path, "../images/%s", fileName);
 
     Image* img = (Image*) malloc(sizeof(Image));
     if(img == NULL) {
