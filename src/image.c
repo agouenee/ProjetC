@@ -40,7 +40,14 @@ int openImage(char* path, Image* img) {
             // Récupération du type de l'image
             img->type = type;
 
-            //!\\ GESTION DES COMMENTAIRES # //!\\
+            // Gestion des commentaires
+            char header[70];
+            header[0] = '#';
+            while(header[0] == '#') {
+                fgets(header, 70, file);
+            }
+            // Ré-ajustement de la position courante dans le fichier juste après les lignes de commentaires
+            fseek(file, -4, SEEK_CUR);
 
             // Récupération des dimensions de l'image (width, height)
             fscanf(file, "%d %d\n", &(img->width), &(img->height));
@@ -51,7 +58,7 @@ int openImage(char* path, Image* img) {
             // Allocation du tableau de pixels
             img->pixel = (unsigned char*) malloc((img->width)*(img->height)*3*sizeof(unsigned char));
             if(img->pixel == NULL) {
-                // ERREUR ALLOCATION MEMOIRE TABLEAU DE PIXEL
+                // Erreur allocation mémoire tableau de pixels
                 return 0;
             }
             // Récupération des pixels de l'image
@@ -60,9 +67,7 @@ int openImage(char* path, Image* img) {
             }
         }
     }
-
-   // fflush(file);
-   // fclose(file);
-
+    //fflush(stdin);
+    fclose(file);
     return 1;
 }

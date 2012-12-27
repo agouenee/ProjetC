@@ -1,3 +1,8 @@
+/*************************************************/
+/*         Katia Moreira & Audrey Guénée         */
+/*                Projet C - 2012                */
+/*************************************************/
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +12,7 @@
 #include "interface.h"
 
 int main(void) {
+    // Ouverture image
 	char* path = "../images/portugal.ppm";
     Image* img = (Image*) malloc(sizeof(Image));
     if(img == NULL) {
@@ -15,10 +21,6 @@ int main(void) {
     else {
         int opening = openImage(path, img);
         if(opening == 1) {
-            printf("type: %d\n", img->type);
-            printf("width: %d    height: %d\n", img->width, img->height);
-            printf("max: %d\n", img->max);
-
             initGLIMAGIMP_IHM(img->width, img->height, img->pixel, img->width, img->height);
         }
         else {
@@ -27,5 +29,6 @@ int main(void) {
         }
     }
 
+    free(img->pixel);
 	return 0;
 }
