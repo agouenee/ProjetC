@@ -9,6 +9,6 @@ typedef struct Image {
     unsigned char* pixel;
 } Image;
 
-int openImage(char* path, Image* img);
+Image* openImage(char* path);
 
 #endif

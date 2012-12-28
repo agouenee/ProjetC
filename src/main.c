@@ -8,31 +8,29 @@
 #include <stdlib.h>
 
 #include "image.h"
+#include "layer.h"
+
 #include "outils.h"
 #include "interface.h"
 
 int main(void) {
-    // Ouverture image
+    // Chargement et ouverture de l'image (IM_1)
     char* fileName = (char*) malloc(sizeof(char)*22);
     char path[100];
     printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm) :\n");
     scanf("%s", fileName);
     sprintf(path, "../images/%s", fileName);
+    Image* img = openImage(path);
 
-    Image* img = (Image*) malloc(sizeof(Image));
-    if(img == NULL) {
-        printf("Problème allocation mémoire structure image.\n");
-    }
-    else {
-        int opening = openImage(path, img);
-        if(opening == 1) {
-            initGLIMAGIMP_IHM(img->width, img->height, img->pixel, img->width, img->height);
-        }
-        else {
-            // Problème mémoire ou format fichier
-            printf("Problème ouverture fichier.\n");
-        }
-    }
+
+    // Création d'un calque vide (CAL_1)
+    Layer* l = addEmptyLayer(img);
+
+
+    // Affichage de l'image PPM dans l'IHM
+    initGLIMAGIMP_IHM(img->width, img->height, img->pixel, img->width + 200, img->height);
+    // Affichage du calque vide dans l'IHM
+    // initGLIMAGIMP_IHM(l->source->width, l->source->height, l->source->pixel, l->source->width + 200, l->source->height);
 
     free(img->pixel);
 	return 0;

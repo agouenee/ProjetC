@@ -1,7 +1,7 @@
 ----- Pour exécuter le programme -----
 
 Réinstaller la bibliothèque glimagimp (à chaque fois)
-	Dans le répertoire ProjetC/lib, compiler avec make et installer avec . /.install.sh
+	Dans le répertoire ProjetC/lib, compiler avec make et installer avec . ./install.sh
 
 Exécution de glimagimp
 	Dans le répertoire ProjetC, compiler avec make

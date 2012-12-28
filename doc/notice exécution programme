@@ -5,5 +5,5 @@ Réinstaller la bibliothèque glimagimp (à chaque fois)
 
 Exécution de glimagimp
 	Dans le répertoire ProjetC, compiler avec make
-	Dans le répertoire ProjetC/bin, exécuter avec ./glimagimp
+	Dans le répertoire ProjetC/bin, exécuter avec ./imagimp
 	

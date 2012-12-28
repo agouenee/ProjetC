@@ -21,12 +21,13 @@ Pixels de l'image
 
 #include "image.h"
 
-int openImage(char* path, Image* img) {
+// Chargement et ouverture de l'image (IM_1)
+Image* openImage(char* path) {
     // Ouverture fichier (r: lecture seule)
     FILE* file = fopen(path, "r");
     if(file == NULL) {
         // Erreur ouverture fichier
-        return 0;
+        return NULL;
     }
     // Création d'une structure de type Image
     else {
@@ -34,41 +35,47 @@ int openImage(char* path, Image* img) {
         int type;
         fscanf(file, "P%d\n", &type);
         if(type != 6) {
-            return 0;
+            return NULL;
         }
         else {
-            // Récupération du type de l'image
-            img->type = type;
-
-            // Gestion des commentaires
-            char header[70];
-            header[0] = '#';
-            while(header[0] == '#') {
-                fgets(header, 70, file);
+            Image* img = (Image*) malloc(sizeof(Image));
+            if(img == NULL) {
+                // Problème allocation mémoire structure image
+                return NULL;
             }
-            // Ré-ajustement de la position courante dans le fichier juste après les lignes de commentaires
-            fseek(file, -4, SEEK_CUR);
-
-            // Récupération des dimensions de l'image (width, height)
-            fscanf(file, "%d %d\n", &(img->width), &(img->height));
-
-            // Récupération de la valeur maximale utilisée pour coder une couleur (ex: 255)
-            fscanf(file, "%d\n", &(img->max));
-
-            // Allocation du tableau de pixels
-            img->pixel = (unsigned char*) malloc((img->width)*(img->height)*3*sizeof(unsigned char));
-            if(img->pixel == NULL) {
-                // Erreur allocation mémoire tableau de pixels
-                return 0;
-            }
-            // Récupération des pixels de l'image
             else {
-                fread(img->pixel, sizeof(unsigned char), (img->width)*(img->height)*3, file);
-            }
-        }
-    }
+                // Récupération du type de l'image
+                img->type = type;
 
-    //fflush(stdin);
-    fclose(file);
-    return 1;
+                // Gestion des commentaires
+                char header[70];
+                header[0] = '#';
+                while(header[0] == '#') {
+                    fgets(header, 70, file);
+                }
+                // Ré-ajustement de la position courante dans le fichier juste après les lignes de commentaires
+                fseek(file, -4, SEEK_CUR);
+
+                // Récupération des dimensions de l'image (width, height)
+                fscanf(file, "%d %d\n", &(img->width), &(img->height));
+
+                // Récupération de la valeur maximale utilisée pour coder une couleur (ex: 255)
+                fscanf(file, "%d\n", &(img->max));
+
+                // Allocation du tableau de pixels
+                img->pixel = (unsigned char*) malloc((img->width)*(img->height)*3*sizeof(unsigned char));
+                if(img->pixel == NULL) {
+                    // Erreur allocation mémoire tableau de pixels
+                    return NULL;
+                }
+                // Récupération des pixels de l'image
+                else {
+                    fread(img->pixel, sizeof(unsigned char), (img->width)*(img->height)*3, file);
+                }
+            }
+            // fflush(stdin);
+            fclose(file);
+            return img;
+        }
+    }  
 }
