@@ -6,15 +6,15 @@ typedef struct Image {
     unsigned char* pixel;
 } Image;
 
-typedef struct Calque {
-	Image* source;
-	Calque* prev;
-	Calque* next;
-	float opacity;
-	smallint add;
-	smallint multi;
-	lut* lut;
-}Calque;
+typedef struct Layer {
+    Image* source;
+    struct Layer* prev;
+    struct Layer* next;
+    float opacity;
+    char add;
+    char multi;
+    // lut* lut;
+} Layer;
 
 typedef struct lut {
 	lut* next;
