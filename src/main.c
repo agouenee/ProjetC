@@ -33,7 +33,7 @@ int main(void) {
     sprintf(path, "../images/%s", fileName);
     // Création du calque de départ avec l'image PPM ouverte (arrière plan)
     Layer* imgRoot = addImgLayer(path, 1, 0, 0, NULL);
-    // Mise à jour calque courant
+    // Mise à jour du calque courant
     Layer* selected = imgRoot;
 
     // Interruptions clavier (c: caractère saisi; x,y: coordonnées du curseur)
@@ -65,9 +65,9 @@ int main(void) {
                 // Mise à jour du calque courant
                 selected = empty;
                 break;
-            case 27: 
+             case 27: 
                 /* Touche escap */
-                printf("Fin du programme\n");
+                printf("escap) Fin du programme\n");
                 exit(0);
                 break;
             default:
@@ -75,10 +75,46 @@ int main(void) {
         }
     }
 
+    // Interruptions clavier spéciales (c: caractère saisi; x,y: coordonnées du curseur)
+    void kbdSpFunc(int c, int x, int y) {
+        switch(c) {
+            // Navigation entre les calques (CAL_2)
+            case GLUT_KEY_UP:
+                printf("Flèche haut\n");
+                if(selected->next == NULL) {
+                    break;
+                }
+                else if(selected->next != NULL) {
+                    // Affichage dans IHM
+                    actualiseImage(selected->next->source->pixel);
+                    // Mise à jour du calque courant
+                    selected = selected->next;
+                }
+                break;
+            case GLUT_KEY_DOWN:
+                printf("Flèche bas\n");
+                if(selected->prev == NULL) {
+                    break;
+                }
+                else if(selected->prev != NULL) {
+                    // Affichage dans IHM
+                    actualiseImage(selected->prev->source->pixel);
+                    // Mise à jour du calque courant
+                    selected = selected->prev;
+                }
+                break;
+            case GLUT_KEY_F1:
+                printf("Touche F1\n");
+                break;
+            default :
+                printf("Touche spéciale non fonctionnelle\n");
+        }
+    }
+
     // Loading IHM
     //fixeFonctionClicSouris(clickMouse);
     fixeFonctionClavier(kbdFunc);
-    //fixeFonctionClavierSpecial(kbdSpFunc);
+    fixeFonctionClavierSpecial(kbdSpFunc);
     //fixeFonctionDessin(mondessin);
 
     // Affichage de l'image PPM dans l'IHM

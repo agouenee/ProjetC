@@ -13,3 +13,6 @@ Exécution de glimagimp
 (i) Affichage des informations sur l'image et l'IHM
 (n) Ajout d'un calque vide (blanc)
 (echap) Fin du programme
+
+(f. haut) Aller sur le calque au-dessus du calque courant
+(f. bas) Aller sur le calque en-dessous du calque courant
