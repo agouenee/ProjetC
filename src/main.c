@@ -25,14 +25,36 @@ Layer* selected = NULL;
 // Compteur de calques (pour identifier chaque calque créé)
 unsigned int idLayer = 0;
 
+// Initialisation des variables de saisie
+char* fileNameRoot = NULL;
+char* fileName = NULL;
+
+// Personnalisation du rendu (IHM)
+void menuLayer() {
+    writeString(0.84, 0.93, "CALQUES");
+    writeString(0.84, 0.1, "calque 0");
+    writeString(0.82, 0.06, fileNameRoot);
+
+    int i;
+    char layerName[2];
+    float y = 0.10;
+    for(i = 1; i <= idLayer; i++) {
+        sprintf(layerName, "calque %d", i);
+        y += 0.08;
+        writeString(0.84, y, layerName);
+    }
+}
+
+
 int main(void) {
     printf("\n-------------------- IMAGIMP 2012 --------------------\n\n");
     // Chargement et ouverture de l'image (IM_1)
-    char* fileName = (char*) malloc(sizeof(char)*22);
+    fileNameRoot = (char*) malloc(sizeof(char)*22);
+    fileName = (char*) malloc(sizeof(char)*22);
     char path[100];
     printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm) :\n");
-    scanf("%s", fileName);
-    sprintf(path, "../images/%s", fileName);
+    scanf("%s", fileNameRoot);
+    sprintf(path, "../images/%s", fileNameRoot);
     // Création du calque de départ avec l'image PPM ouverte (calque 0)
     Layer* imgRoot = addImgLayer(path, idLayer, 1, 0, 0, NULL);
     // Mise à jour du calque courant
@@ -116,7 +138,7 @@ int main(void) {
     //fixeFonctionClicSouris(clickMouse);
     fixeFonctionClavier(kbdFunc);
     fixeFonctionClavierSpecial(kbdSpFunc);
-    //fixeFonctionDessin(mondessin);
+    fixeFonctionDessin(menuLayer);
 
     // Affichage de l'image PPM dans l'IHM
     initGLIMAGIMP_IHM(imgRoot->source->width, imgRoot->source->height, imgRoot->source->pixel, imgRoot->source->width + 200, imgRoot->source->height);
