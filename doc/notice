@@ -11,7 +11,9 @@ Exécution de glimagimp
 ----- Pour utiliser le programme -----
 (c) Ajout d'un calque image (PPM)
 (i) Affichage des informations sur l'image et l'IHM
+(m) Modification du type de mélange du calque
 (n) Ajout d'un calque vide (blanc)
+(o) Modification de l'opacité du calque sélectionné
 (echap) Fin du programme
 
 (f. haut) Aller sur le calque au-dessus du calque courant

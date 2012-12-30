@@ -12,8 +12,7 @@ typedef struct Layer {
     struct Layer* prev;
     struct Layer* next;
     float opacity;
-    char add;
-    char multi;
+    unsigned char mix;
     // lut* lut;
 } Layer;
 

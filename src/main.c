@@ -25,9 +25,11 @@ Layer* selected = NULL;
 // Compteur de calques (pour identifier chaque calque créé)
 unsigned int idLayer = 0;
 
-// Initialisation des variables de saisie
+// Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
 char* fileName = NULL;
+float opacity = 1.0; /* par défaut, opaque */
+unsigned int mix = 1; /* par défaut, multiplicatif */
 
 // Personnalisation du rendu (IHM)
 void menuLayer() {
@@ -47,16 +49,16 @@ void menuLayer() {
 
 
 int main(void) {
-    printf("\n-------------------- IMAGIMP 2012 --------------------\n\n");
+    printf("\n---------------------------- IMAGIMP 2012 ----------------------------\n\n");
     // Chargement et ouverture de l'image (IM_1)
     fileNameRoot = (char*) malloc(sizeof(char)*22);
     fileName = (char*) malloc(sizeof(char)*22);
     char path[100];
-    printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm) :\n");
+    printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm): ");
     scanf("%s", fileNameRoot);
     sprintf(path, "../images/%s", fileNameRoot);
     // Création du calque de départ avec l'image PPM ouverte (calque 0)
-    Layer* imgRoot = addImgLayer(path, idLayer, 1, 0, 0, NULL);
+    Layer* imgRoot = addImgLayer(path, idLayer, opacity, mix, NULL);
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
 
@@ -66,11 +68,11 @@ int main(void) {
         switch(c) {
             case 'c':
                 printf("Ajout d'un nouveau calque image (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
-                printf("Saisir le nom du fichier à ouvrir (ex: france.ppm) :\n");
+                printf("    Saisir le nom du fichier à ouvrir (ex: france.ppm): ");
                 scanf("%s", fileName);
                 sprintf(path, "../images/%s", fileName);
                 // Ajout du calque
-                imgPPM = addImgLayer(path, ++idLayer, 1, 0, 0, selected);
+                imgPPM = addImgLayer(path, ++idLayer, opacity, mix, selected);
                 // Affichage dans IHM
                 actualiseImage(imgPPM->source->pixel);
                 // Mise à jour du calque courant
@@ -79,6 +81,20 @@ int main(void) {
             case 'i': // Exemple d'utilisation des fonctions de la bibliotheque glimagimp
                 printf("Information image et IHM\n");
                 printInfo();
+                break;
+            case 'm':
+                printf("Modification du type de mélange du calque\n");
+                printf("    Mélange actuel du calque: ");
+                if(selected->mix == 1) {
+                    printf("(1) multiplicatif\n");
+                }
+                else {
+                    printf("(0) additif\n");
+                }
+                printf("    Saisir le nouveau mélange.\n");
+                printf("    0 (additif) ou 1 (multiplicatif): ");
+                scanf("%d", &mix);
+                selected = modifLayerMix(selected, mix);
                 break;
             case 'n':
                 printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
@@ -89,9 +105,21 @@ int main(void) {
                 // Mise à jour du calque courant
                 selected = empty;
                 break;
-             case 27: 
-                /* Touche escap */
+            case 'o':
+                printf("Modification de l'opacité du calque\n");
+                printf("    Opacité actuelle du calque: %f\n", selected->opacity);
+                printf("    Saisir la nouvelle opacité.\n");
+                printf("    Valeur comprise entre 0.0 (transparent) et 1.0 (opaque): ");
+                scanf("%f", &opacity);
+                selected = modifLayerOpacity(selected, opacity);
+                break;
+            case 27:
                 printf("escap) Fin du programme\n");
+                // Désallocation de la mémoire (IHM_4)
+                free(imgRoot);
+                free(imgPPM);
+                free(empty);
+                // Sortie du programme
                 exit(0);
                 break;
             default:
@@ -105,7 +133,7 @@ int main(void) {
             // Navigation entre les calques (CAL_2)
             case GLUT_KEY_UP:
                 if(selected->next == NULL) {
-                    printf("Calque courant = calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d\n", selected->id);
                     break;
                 }
                 else if(selected->next != NULL) {
@@ -113,12 +141,12 @@ int main(void) {
                     actualiseImage(selected->next->source->pixel);
                     // Mise à jour du calque courant
                     selected = selected->next;
-                    printf("Calque courant = calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d\n", selected->id);
                 }
                 break;
             case GLUT_KEY_DOWN:
                 if(selected->prev == NULL) {
-                    printf("Calque courant = calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d\n", selected->id);
                     break;
                 }
                 else if(selected->prev != NULL) {
@@ -126,7 +154,7 @@ int main(void) {
                     actualiseImage(selected->prev->source->pixel);
                     // Mise à jour du calque courant
                     selected = selected->prev;
-                    printf("Calque courant = calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d\n", selected->id);
                 }
                 break;
             default:
@@ -143,6 +171,5 @@ int main(void) {
     // Affichage de l'image PPM dans l'IHM
     initGLIMAGIMP_IHM(imgRoot->source->width, imgRoot->source->height, imgRoot->source->pixel, imgRoot->source->width + 200, imgRoot->source->height);
 
-    free(imgRoot->source->pixel);
 	return 0;
 }

@@ -7,12 +7,13 @@ typedef struct Layer {
     struct Layer* prev;
     struct Layer* next;
     float opacity;
-    char add;
-    char multi;
+    unsigned int mix;
     //lut* lut;
 } Layer;
 
-Layer* addImgLayer(char* path, unsigned int id, float opacity, char add, char multi, Layer* selected);
+Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix, Layer* selected);
 Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected);
+Layer* modifLayerOpacity(Layer* selected, float opacity);
+Layer* modifLayerMix(Layer* selected, unsigned int mix);
 
 #endif

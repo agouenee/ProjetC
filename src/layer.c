@@ -11,7 +11,7 @@
 - image source 
 - calques précédent et suivant
 - opacité 
-- type de mélange
+- type de mélange (0: additif; 1: multiplicatif)
 - liste de LUT
 *********************************/
 
@@ -23,7 +23,7 @@
 #include "layer.h"
 
 // Ajout d'un calque image
-Layer* addImgLayer(char* path, unsigned int id, float opacity, char add, char multi, Layer* selected) {
+Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix, Layer* selected) {
     Image* img = openImage(path);
     Layer* l = (Layer*) malloc(sizeof(Layer));
     if(img == NULL && l == NULL) {
@@ -34,8 +34,7 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, char add, char mu
         l->id = id;
         l->source = img;
         l->opacity = opacity;
-        l->add = add;
-        l->multi = multi;
+        l->mix = mix;
 
         if(selected == NULL) {
             l->prev = NULL;
@@ -92,8 +91,7 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
                 l->id = id;
                 l->source = white;
                 l->opacity = 0.0;
-                l->add = 0;
-                l->multi = 1;
+                l->mix = 1;
 
                 if(selected == NULL) {
                     l->prev = NULL;
@@ -119,4 +117,19 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
     return l;
 }
 
+// Modification de l'opacité d'un calque (CAL_3)
+Layer* modifLayerOpacity(Layer* selected, float opacity) {
+    if(opacity >= 0.0 && opacity <= 1.0) {
+        selected->opacity = opacity;
+    }
+    return selected;
+}
+
+// Modification du type de mélange (CAL_4)
+Layer* modifLayerMix(Layer* selected, unsigned int mix) {
+    if(mix == 0 || mix == 1) {
+        selected->mix = mix;
+    }
+    return selected;
+}
     
