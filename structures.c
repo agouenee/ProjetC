@@ -7,6 +7,7 @@ typedef struct Image {
 } Image;
 
 typedef struct Layer {
+    unsigned int id;
     Image* source;
     struct Layer* prev;
     struct Layer* next;

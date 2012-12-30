@@ -23,7 +23,7 @@
 #include "layer.h"
 
 // Ajout d'un calque image
-Layer* addImgLayer(char* path, float opacity, char add, char multi, Layer* selected) {
+Layer* addImgLayer(char* path, unsigned int id, float opacity, char add, char multi, Layer* selected) {
     Image* img = openImage(path);
     Layer* l = (Layer*) malloc(sizeof(Layer));
     if(img == NULL && l == NULL) {
@@ -31,6 +31,7 @@ Layer* addImgLayer(char* path, float opacity, char add, char multi, Layer* selec
         return NULL;
     }
     else {
+        l->id = id;
         l->source = img;
         l->opacity = opacity;
         l->add = add;
@@ -59,7 +60,7 @@ Layer* addImgLayer(char* path, float opacity, char add, char multi, Layer* selec
 }
 
 // Ajout d'un calque vide (CAL_1)
-Layer* addEmptyLayer(Layer* imgRoot, Layer* selected) {
+Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
 	Layer* l = (Layer*) malloc(sizeof(Layer));
     if(l == NULL) {
     	// Problème allocation mémoire structure calque
@@ -88,6 +89,7 @@ Layer* addEmptyLayer(Layer* imgRoot, Layer* selected) {
                     white->pixel[i] = 255;
                 }
 
+                l->id = id;
                 l->source = white;
                 l->opacity = 0.0;
                 l->add = 0;

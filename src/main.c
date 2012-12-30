@@ -22,6 +22,8 @@ Layer* imgPPM = NULL;
 Layer* empty = NULL;
 // Calque courant (sélectionné)
 Layer* selected = NULL;
+// Compteur de calques (pour identifier chaque calque créé)
+unsigned int idLayer = 0;
 
 int main(void) {
     printf("\n-------------------- IMAGIMP 2012 --------------------\n\n");
@@ -31,8 +33,8 @@ int main(void) {
     printf("Saisir le nom du fichier à ouvrir (ex: portugal.ppm) :\n");
     scanf("%s", fileName);
     sprintf(path, "../images/%s", fileName);
-    // Création du calque de départ avec l'image PPM ouverte (arrière plan)
-    Layer* imgRoot = addImgLayer(path, 1, 0, 0, NULL);
+    // Création du calque de départ avec l'image PPM ouverte (calque 0)
+    Layer* imgRoot = addImgLayer(path, idLayer, 1, 0, 0, NULL);
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
 
@@ -46,7 +48,7 @@ int main(void) {
                 scanf("%s", fileName);
                 sprintf(path, "../images/%s", fileName);
                 // Ajout du calque
-                imgPPM = addImgLayer(path, 1, 0, 0, selected);
+                imgPPM = addImgLayer(path, ++idLayer, 1, 0, 0, selected);
                 // Affichage dans IHM
                 actualiseImage(imgPPM->source->pixel);
                 // Mise à jour du calque courant
@@ -59,7 +61,7 @@ int main(void) {
             case 'n':
                 printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
                 // Ajout du calque
-                empty = addEmptyLayer(imgRoot, selected);
+                empty = addEmptyLayer(++idLayer, imgRoot, selected);
                 // Affichage dans IHM
                 actualiseImage(empty->source->pixel);
                 // Mise à jour du calque courant
@@ -80,8 +82,8 @@ int main(void) {
         switch(c) {
             // Navigation entre les calques (CAL_2)
             case GLUT_KEY_UP:
-                printf("Flèche haut\n");
                 if(selected->next == NULL) {
+                    printf("Calque courant = calque %d\n", selected->id);
                     break;
                 }
                 else if(selected->next != NULL) {
@@ -89,11 +91,12 @@ int main(void) {
                     actualiseImage(selected->next->source->pixel);
                     // Mise à jour du calque courant
                     selected = selected->next;
+                    printf("Calque courant = calque %d\n", selected->id);
                 }
                 break;
             case GLUT_KEY_DOWN:
-                printf("Flèche bas\n");
                 if(selected->prev == NULL) {
+                    printf("Calque courant = calque %d\n", selected->id);
                     break;
                 }
                 else if(selected->prev != NULL) {
@@ -101,12 +104,10 @@ int main(void) {
                     actualiseImage(selected->prev->source->pixel);
                     // Mise à jour du calque courant
                     selected = selected->prev;
+                    printf("Calque courant = calque %d\n", selected->id);
                 }
                 break;
-            case GLUT_KEY_F1:
-                printf("Touche F1\n");
-                break;
-            default :
+            default:
                 printf("Touche spéciale non fonctionnelle\n");
         }
     }
