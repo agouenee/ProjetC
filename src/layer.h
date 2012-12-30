@@ -11,6 +11,7 @@ typedef struct Layer {
     //lut* lut;
 } Layer;
 
-Layer* addEmptyLayer(Image* img);
+Layer* addImgLayer(char* path, float opacity, char add, char multi, Layer* selected);
+Layer* addEmptyLayer(Layer* imgRoot, Layer* selected);
 
 #endif

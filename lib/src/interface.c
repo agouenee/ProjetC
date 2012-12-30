@@ -83,7 +83,6 @@ void actualiseImage(unsigned char* newImage) {
 	image_src = newImage;
 }
 
-
 /// ///////////////////////////////////////////////////////////////////////////
 /// Corps des fonctions IHM
 /// ///////////////////////////////////////////////////////////////////////////
@@ -292,23 +291,23 @@ void initGLIMAGIMP(unsigned int w,unsigned int h,unsigned char *tabRVB)
 /// ///////////////////////////////////////////////////////////////////////////
 
 void printInfo() {
-	printf("\n");
 	printf("**************************************\n");
 	printf("              INFORMATIONS            \n");
-	printf("Taille ecran : %d/%d",width_ecran,height_ecran);
-	printf("Taille image : %d/%d",width_image,height_image);
+	printf("--------------------------------------\n");
+	printf("Taille écran : %d x %d pixels\n",width_ecran,height_ecran);
+	printf("Taille image : %d x %d pixels\n\n",width_image,height_image);
 	printf("Fonction dessin ");
-	if (fct_dessin_user == NULL) printf("non");
-	printf(" fixée\n");
+	if (fct_dessin_user == NULL) printf("non ");
+	printf("fixée\n");
 	printf("Fonction souris ");
-	if (fct_clic_souris_user == NULL) printf("non");
-	printf(" fixée\n");
+	if (fct_clic_souris_user == NULL) printf("non ");
+	printf("fixée\n");
 	printf("Fonction clavier ");
-	if (fct_clavier_user == NULL) printf("non");
-	printf(" fixée\n");
-	printf("Fonction clavier speciale ");
-	if (fct_clavier_spe_user == NULL) printf("non");
-	printf(" fixée\n");
+	if (fct_clavier_user == NULL) printf("non ");
+	printf("fixée\n");
+	printf("Fonction clavier spéciale ");
+	if (fct_clavier_spe_user == NULL) printf("non ");
+	printf("fixée\n");
 	printf("**************************************\n");
 }
 

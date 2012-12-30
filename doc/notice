@@ -5,5 +5,11 @@ Réinstaller la bibliothèque glimagimp (à chaque fois)
 
 Exécution de glimagimp
 	Dans le répertoire ProjetC, compiler avec make
-	Dans le répertoire ProjetC/bin, exécuter avec ./glimagimp
-	
+	Dans le répertoire ProjetC/bin, exécuter avec ./imagimp
+
+
+----- Pour utiliser le programme -----
+(c) Ajout d'un calque image (PPM)
+(i) Affichage des informations sur l'image et l'IHM
+(n) Ajout d'un calque vide (blanc)
+(echap) Fin du programme
