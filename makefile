@@ -3,9 +3,9 @@ BIN = bin/imagimp
 # FLAG
 FLAGS = -Wall -g
 # INCLUDES
-INC = lib/include
+INC = lib/glimagimp/include
 # INCLUDES
-LIBDIR = lib/lib
+LIBDIR = lib/glimagimp/lib
 # Librairies
 LIBS =  -lglimagimp -lglut -lGL -lGLU
 # Compilateur
