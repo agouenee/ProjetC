@@ -14,6 +14,7 @@ typedef struct Layer {
     float opacity;
     unsigned char mix;
     // lut* lut;
+    unsigned char* pixel; /* pixel = source->pixel, permet modification apparence calque tout en gardant valeurs pixels image */
 } Layer;
 
 typedef struct lut {

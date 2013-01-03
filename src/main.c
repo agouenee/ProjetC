@@ -25,6 +25,8 @@ Layer* selected = NULL;
 // Compteur de calques (pour identifier chaque calque créé)
 unsigned int idLayer = 0;
 
+Layer* tmp = NULL;
+
 // Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
 char* fileName = NULL;
@@ -59,6 +61,7 @@ int main(void) {
     sprintf(path, "../images/%s", fileNameRoot);
     // Création du calque de départ avec l'image PPM ouverte (calque 0)
     Layer* imgRoot = addImgLayer(path, idLayer, opacity, mix, NULL);
+    imgRoot->pixel = imgRoot->source->pixel;
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
 
@@ -74,7 +77,7 @@ int main(void) {
                 // Ajout du calque
                 imgPPM = addImgLayer(path, ++idLayer, opacity, mix, selected);
                 // Affichage dans IHM
-                actualiseImage(imgPPM->source->pixel);
+                actualiseImage(imgPPM->pixel);
                 // Mise à jour du calque courant
                 selected = imgPPM;
                 break;
@@ -84,35 +87,58 @@ int main(void) {
                 break;
             case 'm':
                 printf("Modification du type de mélange du calque\n");
-                printf("    Mélange actuel du calque: ");
-                if(selected->mix == 1) {
-                    printf("(1) multiplicatif\n");
+                if(selected->prev != NULL) {
+                    printf("    Mélange actuel du calque: ");
+                    if(selected->mix == 1) {
+                        printf("(1) multiplicatif\n");
+                    }
+                    else {
+                        printf("(0) additif\n");
+                    }
+                    printf("    Saisir le nouveau mélange.\n");
+                    printf("    0 (additif) ou 1 (multiplicatif): ");
+                    scanf("%d", &mix);
+                    selected = modifLayerMix(selected, mix);
+                    // Modification de l'apparence du calque avec son nouveau mélange
+                    selected = modifLayer(selected);
+                    // Affichage dans IHM
+                    actualiseImage(selected->pixel);
                 }
                 else {
-                    printf("(0) additif\n");
+                    printf("Impossible de modifier le mélange du calque initial :\nil n'y a aucun calque en dessous !\n");
                 }
-                printf("    Saisir le nouveau mélange.\n");
-                printf("    0 (additif) ou 1 (multiplicatif): ");
-                scanf("%d", &mix);
-                selected = modifLayerMix(selected, mix);
                 break;
             case 'n':
                 printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
                 // Ajout du calque
                 empty = addEmptyLayer(++idLayer, imgRoot, selected);
                 // Affichage dans IHM
-                actualiseImage(empty->source->pixel);
+                actualiseImage(empty->pixel);
                 // Mise à jour du calque courant
                 selected = empty;
                 break;
             case 'o':
                 printf("Modification de l'opacité du calque\n");
-                printf("    Opacité actuelle du calque: %f\n", selected->opacity);
-                printf("    Saisir la nouvelle opacité.\n");
-                printf("    Valeur comprise entre 0.0 (transparent) et 1.0 (opaque): ");
-                scanf("%f", &opacity);
-                selected = modifLayerOpacity(selected, opacity);
+                if(selected->prev != NULL) {
+                    printf("    Opacité actuelle du calque: %f\n", selected->opacity);
+                    printf("    Saisir la nouvelle opacité.\n");
+                    printf("    Valeur comprise entre 0.0 (transparent) et 1.0 (opaque): ");
+                    scanf("%f", &opacity);
+                    selected = modifLayerOpacity(selected, opacity);
+                    // Modification de l'apparence du calque avec sa nouvelle opacité
+                    selected = modifLayer(selected);
+                    // Affichage dans IHM
+                    actualiseImage(selected->pixel);
+                }
+                else {
+                    printf("Impossible de modifier l'opacité du calque initial :\nil n'y a aucun calque en dessous !\n");
+                }
                 break;
+            /*case 'x':
+                printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
+                tmp = suppLayer(selected, selected->prev);
+                selected = tmp;
+                break;*/
             case 27:
                 printf("escap) Fin du programme\n");
                 // Désallocation de la mémoire (IHM_4)
@@ -133,28 +159,28 @@ int main(void) {
             // Navigation entre les calques (CAL_2)
             case GLUT_KEY_UP:
                 if(selected->next == NULL) {
-                    printf("    Calque sélectionné: calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                     break;
                 }
                 else if(selected->next != NULL) {
                     // Affichage dans IHM
-                    actualiseImage(selected->next->source->pixel);
+                    actualiseImage(selected->next->pixel);
                     // Mise à jour du calque courant
                     selected = selected->next;
-                    printf("    Calque sélectionné: calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                 }
                 break;
             case GLUT_KEY_DOWN:
                 if(selected->prev == NULL) {
-                    printf("    Calque sélectionné: calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                     break;
                 }
                 else if(selected->prev != NULL) {
                     // Affichage dans IHM
-                    actualiseImage(selected->prev->source->pixel);
+                    actualiseImage(selected->prev->pixel);
                     // Mise à jour du calque courant
                     selected = selected->prev;
-                    printf("    Calque sélectionné: calque %d\n", selected->id);
+                    printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                 }
                 break;
             default:
@@ -169,7 +195,7 @@ int main(void) {
     fixeFonctionDessin(menuLayer);
 
     // Affichage de l'image PPM dans l'IHM
-    initGLIMAGIMP_IHM(imgRoot->source->width, imgRoot->source->height, imgRoot->source->pixel, imgRoot->source->width + 200, imgRoot->source->height);
+    initGLIMAGIMP_IHM(imgRoot->source->width, imgRoot->source->height, imgRoot->pixel, imgRoot->source->width + 200, imgRoot->source->height);
 
 	return 0;
 }

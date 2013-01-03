@@ -8,11 +8,12 @@
 // Calque vide = image source totalement blanche, opacité nulle, mélange multiplicatif
 
 /* CARACTERISTIQUES **************
-- image source 
+- image source (permet de garder une copie en mémoire du tableau de pixels original)
 - calques précédent et suivant
 - opacité 
 - type de mélange (0: additif; 1: multiplicatif)
 - liste de LUT
+- tableau de pixel (reprend les valeurs des pixels de l'image source mais est modifié selon l'opacité et le type de mélange du calque)
 *********************************/
 
 #include <string.h>
@@ -52,6 +53,15 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix,
             l->next = NULL;
 
             selected->next = l;
+        }
+
+        l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+        if(l->pixel == NULL) {
+            // Problème allocation mémoire tableau pixels
+            return NULL;
+        }
+        else {
+            l = modifLayer(l);
         }
     }
 
@@ -110,6 +120,16 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
 
                     selected->next = l;
                 }
+
+                l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+                if(l->pixel == NULL) {
+                    // Problème allocation mémoire tableau pixels
+                    return NULL;
+                }
+                else {
+                    l = modifLayer(l);
+                }
+
             }
         }
     }
@@ -119,17 +139,61 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
 
 // Modification de l'opacité d'un calque (CAL_3)
 Layer* modifLayerOpacity(Layer* selected, float opacity) {
-    if(opacity >= 0.0 && opacity <= 1.0) {
-        selected->opacity = opacity;
+    if(selected->prev != NULL) {
+        if(opacity >= 0.0 && opacity <= 1.0) {
+            selected->opacity = opacity;
+        }
     }
     return selected;
 }
 
 // Modification du type de mélange (CAL_4)
 Layer* modifLayerMix(Layer* selected, unsigned int mix) {
-    if(mix == 0 || mix == 1) {
-        selected->mix = mix;
+    if(selected->prev != NULL) {
+        if(mix == 0 || mix == 1) {
+            selected->mix = mix;
+        }
     }
     return selected;
 }
-    
+
+// Modification de l'apparence du calque après modification de l'opacité et/ou du type mélange
+Layer* modifLayer(Layer* selected) {
+    if(selected->prev != NULL) {
+        int i;
+        // Si le mélange est multiplicatif
+        if(selected->mix == 1) {
+            for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
+                selected->pixel[i] = (1 - selected->opacity)*selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+            }
+        }
+        // Si le mélange est additif
+        else if(selected->mix == 0) {
+            for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
+                selected->pixel[i] = selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+            }
+        }
+    }
+    return selected;
+}
+
+// Supression d'un calque (CAL_5)
+/*Layer* suppLayer(Layer* selected, Layer* prev) {
+    Layer* tmp = prev;
+    if(selected->next == NULL) {
+        selected->prev = NULL;
+        selected->prev->next = NULL;
+    }
+    else if(selected->next != NULL) {
+        selected->prev->next =
+    }
+    else if(selected->next == NULL && selected->prev == NULL) {
+        // Interdiction de supprimer le dernier calque s'il n'en reste plus qu'un
+        return selected;
+    }
+    else if(selected->prev == NULL) {
+        // Interdiction de supprimer le calque initial
+        return selected;
+    }
+    return tmp;
+}*/
