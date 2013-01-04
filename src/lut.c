@@ -16,9 +16,9 @@
 void initLUT(Lut* lutable) {
 	int i;
 	for (i=0; i<256; i++) {
-		lutable->tabR[i] = 0;
-		lutable->tabV[i] = 0;
-		lutable->tabB[i] = 0;
+		lutable->tabR[i] = i;
+		lutable->tabV[i] = i;
+		lutable->tabB[i] = i;
 	}
 }
 
