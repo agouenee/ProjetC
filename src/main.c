@@ -49,6 +49,16 @@ void menuLayer() {
     }
 }
 
+void mainMenu() {
+    printf("\n-------------------- Menu principal --------------------\n\n");
+    printf("[c] Ajouter un nouveau calque image\n");
+    printf("[i] Afficher les informations de l'image\n");
+    printf("[m] Modifier le type de melange du calque\n");
+    printf("[n] Ajouter un calque vide\n");
+    printf("[o] Modifier l'opacite du calque\n");
+    printf("\n--------------------------------------------------------\n\n");
+}
+
 
 int main(void) {
     printf("\n---------------------------- IMAGIMP 2012 ----------------------------\n\n");
@@ -64,6 +74,7 @@ int main(void) {
     imgRoot->pixel = imgRoot->source->pixel;
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
+    mainMenu();
 
     // Interruptions clavier (c: caractère saisi; x,y: coordonnées du curseur)
     void kbdFunc(unsigned char c, int x, int y) {
@@ -80,10 +91,12 @@ int main(void) {
                 actualiseImage(imgPPM->pixel);
                 // Mise à jour du calque courant
                 selected = imgPPM;
+                mainMenu();
                 break;
             case 'i': // Exemple d'utilisation des fonctions de la bibliotheque glimagimp
                 printf("Information image et IHM\n");
                 printInfo();
+                mainMenu();
                 break;
             case 'm':
                 printf("Modification du type de mélange du calque\n");
@@ -107,6 +120,7 @@ int main(void) {
                 else {
                     printf("Impossible de modifier le mélange du calque initial :\nil n'y a aucun calque en dessous !\n");
                 }
+                mainMenu();
                 break;
             case 'n':
                 printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
@@ -116,6 +130,7 @@ int main(void) {
                 actualiseImage(empty->pixel);
                 // Mise à jour du calque courant
                 selected = empty;
+                mainMenu();
                 break;
             case 'o':
                 printf("Modification de l'opacité du calque\n");
@@ -133,6 +148,7 @@ int main(void) {
                 else {
                     printf("Impossible de modifier l'opacité du calque initial :\nil n'y a aucun calque en dessous !\n");
                 }
+                mainMenu();
                 break;
             /*case 'x':
                 printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
@@ -150,6 +166,7 @@ int main(void) {
                 break;
             default:
                 printf("Touche non fonctionnelle\n");
+                mainMenu();
         }
     }
 
