@@ -178,22 +178,39 @@ Layer* modifLayer(Layer* selected) {
 }
 
 // Supression d'un calque (CAL_5)
-/*Layer* suppLayer(Layer* selected, Layer* prev) {
-    Layer* tmp = prev;
-    if(selected->next == NULL) {
-        selected->prev = NULL;
-        selected->prev->next = NULL;
+int suppLayer(Layer* selected) {
+    // S'il n'y a pas de calque précédent
+    if(selected->prev == NULL) {
+        // S'il n'y a pas de calque suivant, le calque sélectionné est le calque initial, tout seul
+        if(selected->next == NULL) {
+            // Impossible de supprimer le calque sélectionné s'il ne reste plus que lui
+            return 0;
+        }
+        // S'il y a un calque suivant
+        else {
+            selected->next->prev = NULL;
+            selected->next = NULL;
+            free(selected);
+            return 1;
+        }
     }
-    else if(selected->next != NULL) {
-        selected->prev->next =
+    // S'il y a un calque précédent
+    else {
+        // S'il n'y a pas de calque suivant
+        if(selected->next == NULL) {
+            selected->prev->next = NULL;
+            selected->prev = NULL;
+            free(selected);
+            return 1;
+        }
+        // S'il y a un calque suivant
+        else {
+            selected->prev->next = selected->next;
+            selected->next->prev = selected->prev;
+            selected->next = NULL;
+            selected->prev = NULL;
+            free(selected);
+            return 1;
+        }
     }
-    else if(selected->next == NULL && selected->prev == NULL) {
-        // Interdiction de supprimer le dernier calque s'il n'en reste plus qu'un
-        return selected;
-    }
-    else if(selected->prev == NULL) {
-        // Interdiction de supprimer le calque initial
-        return selected;
-    }
-    return tmp;
-}*/
+}

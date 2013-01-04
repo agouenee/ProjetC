@@ -17,6 +17,6 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected);
 Layer* modifLayerOpacity(Layer* selected, float opacity);
 Layer* modifLayerMix(Layer* selected, unsigned int mix);
 Layer* modifLayer(Layer* selected);
-//Layer* suppLayer(Layer* selected, Layer* prev);
+int suppLayer(Layer* selected);
 
 #endif

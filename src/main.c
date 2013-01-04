@@ -25,6 +25,7 @@ Layer* empty = NULL;
 Layer* selected = NULL;
 // Compteur de calques (pour identifier chaque calque créé)
 unsigned int idLayer = 0;
+unsigned int cptLayer = 0;
 
 Layer* tmp = NULL;
 
@@ -38,6 +39,9 @@ float opacity = 1.0; /* par défaut, opaque */
 unsigned int mix = 1; /* par défaut, multiplicatif */
 int val = 0;
 
+// Initialisation d'une variable de test
+int test = 0;
+
 // Personnalisation du rendu (IHM)
 void menuLayer() {
     writeString(0.84, 0.93, "CALQUES");
@@ -47,7 +51,7 @@ void menuLayer() {
     int i;
     char layerName[2];
     float y = 0.10;
-    for(i = 1; i <= idLayer; i++) {
+    for(i = 1; i <= cptLayer; i++) {
         sprintf(layerName, "calque %d", i);
         y += 0.08;
         writeString(0.84, y, layerName);
@@ -93,6 +97,7 @@ int main(void) {
                 sprintf(path, "../images/%s", fileName);
                 // Ajout du calque
                 imgPPM = addImgLayer(path, ++idLayer, opacity, mix, selected);
+                cptLayer++;
                 // Affichage dans IHM
                 actualiseImage(imgPPM->pixel);
                 // Mise à jour du calque courant
@@ -132,6 +137,7 @@ int main(void) {
                 printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
                 // Ajout du calque
                 empty = addEmptyLayer(++idLayer, imgRoot, selected);
+                cptLayer++;
                 // Affichage dans IHM
                 actualiseImage(empty->pixel);
                 // Mise à jour du calque courant
@@ -172,11 +178,20 @@ int main(void) {
                 }
                 mainMenu();
                 break;
-            /*case 'x':
+            case 'x':
                 printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
-                tmp = suppLayer(selected, selected->prev);
-                selected = tmp;
-                break;*/
+                tmp = selected->prev;
+                test = suppLayer(selected);
+                if(test == 1) {
+                    printf("Calque supprimé\n");
+                    cptLayer--;
+                    selected = tmp;
+                    actualiseImage(selected->pixel);
+                }
+                else {
+                    printf("Impossible de supprimer ce calque.\n");
+                }
+                break;
             case 27:
                 printf("escap) Fin du programme\n");
                 // Désallocation de la mémoire (IHM_4)
