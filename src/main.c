@@ -59,21 +59,21 @@ void menuLayer() {
 }
 
 void mainMenu() {
-    printf("\n-------------------- Menu principal --------------------\n\n");
+    printf("\n----------------- Menu principal -----------------\n\n");
     printf("[i] Afficher les informations de l'image\n");
     printf("[1] Accéder au menu calque\n");
     printf("[2] Accéder au menu LUT\n");
-    printf("\n--------------------------------------------------------\n\n");
+    printf("\n--------------------------------------------------\n\n");
 }
 void layerMenu() {
-    printf("\n-------------------- Menu calque --------------------\n\n");
+    printf("\n------------------- Menu calque ------------------\n\n");
     printf("[c] Ajouter un nouveau calque image\n");
     printf("[m] Modifier le type de melange du calque\n");
     printf("[o] Modifier l'opacite du calque\n");
     printf("[n] Ajouter un calque vide\n");
     printf("[x] Supprimer un calque\n");
     printf("[r] Retour au menu principal\n");
-    printf("\n-----------------------------------------------------\n\n");
+    printf("\n--------------------------------------------------\n\n");
 }
 void lutMenu() {
     printf("\n-------------------- Menu LUT --------------------\n\n");
@@ -200,16 +200,34 @@ int main(void) {
                 lutMenu();
                 break;
                     case 'a':
-                        printf("Ajout de luminosite\n");
+                        printf("Augmentation de la luminosite\n");
                         printf("    Entrez une valeur entre 0 et 255 : ");
                         scanf("%d", &val);
                         if(val < 0 || val > 255) {
                             printf("    Erreur : valeur non comprise entre 0 et 255\n");
-                            printf("    Augmentation de la luminosite non effectue.\n\n");
+                            printf("    Augmentation de la luminosite non effectuee.\n\n");
+                            lutMenu();
                         }
                         else {
                             initLUT(&lutable);
                             addLum(&lutable, val);
+                            //remplissage d'une image avec les nouveaux pixels modifiés
+                            setModif(selected, &lutable);
+                        }
+                        lutMenu();
+                        break;
+                    case 'b':
+                        printf("Diminution de la luminosite\n");
+                        printf("    Entrez une valeur entre 0 et 255 : ");
+                        scanf("%d", &val);
+                        if(val < 0 || val > 255) {
+                            printf("    Erreur : valeur non comprise entre 0 et 255\n");
+                            printf("    Diminution de la luminosite non effectuee.\n\n");
+                            lutMenu();
+                        }
+                        else {
+                            initLUT(&lutable);
+                            dimLum(&lutable, val);
                             //remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                         }
