@@ -3,7 +3,7 @@
 
 typedef struct Layer {
 	unsigned int id;
-    Image* source;
+    struct Image* source;
     struct Layer* prev;
     struct Layer* next;
     float opacity;

@@ -9,6 +9,7 @@
 
 #include "image.h"
 #include "layer.h"
+#include "lut.h"
 
 #include "outils.h"
 #include "interface.h"
@@ -27,11 +28,15 @@ unsigned int idLayer = 0;
 
 Layer* tmp = NULL;
 
+// Lut
+Lut lutable;
+
 // Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
 char* fileName = NULL;
 float opacity = 1.0; /* par défaut, opaque */
 unsigned int mix = 1; /* par défaut, multiplicatif */
+int val = 0;
 
 // Personnalisation du rendu (IHM)
 void menuLayer() {
@@ -56,6 +61,7 @@ void mainMenu() {
     printf("[m] Modifier le type de melange du calque\n");
     printf("[n] Ajouter un calque vide\n");
     printf("[o] Modifier l'opacite du calque\n");
+    printf("[l] Augmenter la luminosite\n");
     printf("\n--------------------------------------------------------\n\n");
 }
 
@@ -147,6 +153,22 @@ int main(void) {
                 }
                 else {
                     printf("Impossible de modifier l'opacité du calque initial :\nil n'y a aucun calque en dessous !\n");
+                }
+                mainMenu();
+                break;
+            case 'l':
+                printf("Ajout de luminosite\n");
+                printf("    Entrez une valeur entre 0 et 255 : ");
+                scanf("%d", &val);
+                if(val < 0 || val > 255) {
+                    printf("    Erreur : valeur non comprise entre 0 et 255\n");
+                    printf("    Augmentation de la luminosite non effectue.\n\n");
+                }
+                else {
+                    initLUT(&lutable);
+                    addLum(&lutable, val);
+                    //remplissage d'une image avec les nouveaux pixels modifiés
+                    setModif(selected, &lutable);
                 }
                 mainMenu();
                 break;
