@@ -60,13 +60,27 @@ void menuLayer() {
 
 void mainMenu() {
     printf("\n-------------------- Menu principal --------------------\n\n");
-    printf("[c] Ajouter un nouveau calque image\n");
     printf("[i] Afficher les informations de l'image\n");
-    printf("[m] Modifier le type de melange du calque\n");
-    printf("[n] Ajouter un calque vide\n");
-    printf("[o] Modifier l'opacite du calque\n");
-    printf("[l] Augmenter la luminosite\n");
+    printf("[1] Accéder au menu calque\n");
+    printf("[2] Accéder au menu LUT\n");
     printf("\n--------------------------------------------------------\n\n");
+}
+void layerMenu() {
+    printf("\n-------------------- Menu calque --------------------\n\n");
+    printf("[c] Ajouter un nouveau calque image\n");
+    printf("[m] Modifier le type de melange du calque\n");
+    printf("[o] Modifier l'opacite du calque\n");
+    printf("[n] Ajouter un calque vide\n");
+    printf("[x] Supprimer un calque\n");
+    printf("[r] Retour au menu principal\n");
+    printf("\n-----------------------------------------------------\n\n");
+}
+void lutMenu() {
+    printf("\n-------------------- Menu LUT --------------------\n\n");
+    printf("[a] Augmenter la luminosite\n");
+    printf("[b] Diminuer la luminosite\n");
+    printf("[r] Retour au menu principal\n");
+    printf("\n--------------------------------------------------\n\n");
 }
 
 
@@ -90,107 +104,120 @@ int main(void) {
     void kbdFunc(unsigned char c, int x, int y) {
         printf("(%c) ", c);
         switch(c) {
-            case 'c':
-                printf("Ajout d'un nouveau calque image (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
-                printf("    Saisir le nom du fichier à ouvrir (ex: france.ppm): ");
-                scanf("%s", fileName);
-                sprintf(path, "../images/%s", fileName);
-                // Ajout du calque
-                imgPPM = addImgLayer(path, ++idLayer, opacity, mix, selected);
-                cptLayer++;
-                // Affichage dans IHM
-                actualiseImage(imgPPM->pixel);
-                // Mise à jour du calque courant
-                selected = imgPPM;
-                mainMenu();
-                break;
             case 'i': // Exemple d'utilisation des fonctions de la bibliotheque glimagimp
                 printf("Information image et IHM\n");
                 printInfo();
                 mainMenu();
                 break;
-            case 'm':
-                printf("Modification du type de mélange du calque\n");
-                if(selected->prev != NULL) {
-                    printf("    Mélange actuel du calque: ");
-                    if(selected->mix == 1) {
-                        printf("(1) multiplicatif\n");
-                    }
-                    else {
-                        printf("(0) additif\n");
-                    }
-                    printf("    Saisir le nouveau mélange.\n");
-                    printf("    0 (additif) ou 1 (multiplicatif): ");
-                    scanf("%d", &mix);
-                    selected = modifLayerMix(selected, mix);
-                    // Modification de l'apparence du calque avec son nouveau mélange
-                    selected = modifLayer(selected);
-                    // Affichage dans IHM
-                    actualiseImage(selected->pixel);
-                }
-                else {
-                    printf("Impossible de modifier le mélange du calque initial :\nil n'y a aucun calque en dessous !\n");
-                }
-                mainMenu();
+            case '1' :
+                layerMenu();
+                printf("(%c) ", c);
                 break;
-            case 'n':
-                printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
-                // Ajout du calque
-                empty = addEmptyLayer(++idLayer, imgRoot, selected);
-                cptLayer++;
-                // Affichage dans IHM
-                actualiseImage(empty->pixel);
-                // Mise à jour du calque courant
-                selected = empty;
-                mainMenu();
+                    case 'c':
+                        printf("Ajout d'un nouveau calque image (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
+                        printf("    Saisir le nom du fichier à ouvrir (ex: france.ppm): ");
+                        scanf("%s", fileName);
+                        sprintf(path, "../images/%s", fileName);
+                        // Ajout du calque
+                        imgPPM = addImgLayer(path, ++idLayer, opacity, mix, selected);
+                        cptLayer++;
+                        // Affichage dans IHM
+                        actualiseImage(imgPPM->pixel);
+                        // Mise à jour du calque courant
+                        selected = imgPPM;
+                        layerMenu();
+                        break;
+                    case 'm':
+                        printf("Modification du type de mélange du calque\n");
+                        if(selected->prev != NULL) {
+                            printf("    Mélange actuel du calque: ");
+                            if(selected->mix == 1) {
+                                printf("(1) multiplicatif\n");
+                            }
+                            else {
+                                printf("(0) additif\n");
+                            }
+                            printf("    Saisir le nouveau mélange.\n");
+                            printf("    0 (additif) ou 1 (multiplicatif): ");
+                            scanf("%d", &mix);
+                            selected = modifLayerMix(selected, mix);
+                            // Modification de l'apparence du calque avec son nouveau mélange
+                            selected = modifLayer(selected);
+                            // Affichage dans IHM
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            printf("Impossible de modifier le mélange du calque initial :\nil n'y a aucun calque en dessous !\n");
+                        }
+                        layerMenu();
+                        break;
+                    case 'o':
+                        printf("Modification de l'opacité du calque\n");
+                        if(selected->prev != NULL) {
+                            printf("    Opacité actuelle du calque: %f\n", selected->opacity);
+                            printf("    Saisir la nouvelle opacité.\n");
+                            printf("    Valeur comprise entre 0.0 (transparent) et 1.0 (opaque): ");
+                            scanf("%f", &opacity);
+                            selected = modifLayerOpacity(selected, opacity);
+                            // Modification de l'apparence du calque avec sa nouvelle opacité
+                            selected = modifLayer(selected);
+                            // Affichage dans IHM
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            printf("Impossible de modifier l'opacité du calque initial :\nil n'y a aucun calque en dessous !\n");
+                        }
+                        layerMenu();
+                        break;
+                    case 'n':
+                        printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
+                        // Ajout du calque
+                        empty = addEmptyLayer(++idLayer, imgRoot, selected);
+                        cptLayer++;
+                        // Affichage dans IHM
+                        actualiseImage(empty->pixel);
+                        // Mise à jour du calque courant
+                        selected = empty;
+                        layerMenu();
+                        break;
+                    case 'x':
+                        printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
+                        tmp = selected->prev;
+                        test = suppLayer(selected);
+                        if(test == 1) {
+                            printf("Calque supprimé\n");
+                            cptLayer--;
+                            selected = tmp;
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            printf("Impossible de supprimer ce calque.\n");
+                        }
+                        layerMenu();
+                        break;
+
+            case '2' :
+                lutMenu();
                 break;
-            case 'o':
-                printf("Modification de l'opacité du calque\n");
-                if(selected->prev != NULL) {
-                    printf("    Opacité actuelle du calque: %f\n", selected->opacity);
-                    printf("    Saisir la nouvelle opacité.\n");
-                    printf("    Valeur comprise entre 0.0 (transparent) et 1.0 (opaque): ");
-                    scanf("%f", &opacity);
-                    selected = modifLayerOpacity(selected, opacity);
-                    // Modification de l'apparence du calque avec sa nouvelle opacité
-                    selected = modifLayer(selected);
-                    // Affichage dans IHM
-                    actualiseImage(selected->pixel);
-                }
-                else {
-                    printf("Impossible de modifier l'opacité du calque initial :\nil n'y a aucun calque en dessous !\n");
-                }
+                    case 'a':
+                        printf("Ajout de luminosite\n");
+                        printf("    Entrez une valeur entre 0 et 255 : ");
+                        scanf("%d", &val);
+                        if(val < 0 || val > 255) {
+                            printf("    Erreur : valeur non comprise entre 0 et 255\n");
+                            printf("    Augmentation de la luminosite non effectue.\n\n");
+                        }
+                        else {
+                            initLUT(&lutable);
+                            addLum(&lutable, val);
+                            //remplissage d'une image avec les nouveaux pixels modifiés
+                            setModif(selected, &lutable);
+                        }
+                        lutMenu();
+                        break;
+
+            case 'r' :
                 mainMenu();
-                break;
-            case 'l':
-                printf("Ajout de luminosite\n");
-                printf("    Entrez une valeur entre 0 et 255 : ");
-                scanf("%d", &val);
-                if(val < 0 || val > 255) {
-                    printf("    Erreur : valeur non comprise entre 0 et 255\n");
-                    printf("    Augmentation de la luminosite non effectue.\n\n");
-                }
-                else {
-                    initLUT(&lutable);
-                    addLum(&lutable, val);
-                    //remplissage d'une image avec les nouveaux pixels modifiés
-                    setModif(selected, &lutable);
-                }
-                mainMenu();
-                break;
-            case 'x':
-                printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
-                tmp = selected->prev;
-                test = suppLayer(selected);
-                if(test == 1) {
-                    printf("Calque supprimé\n");
-                    cptLayer--;
-                    selected = tmp;
-                    actualiseImage(selected->pixel);
-                }
-                else {
-                    printf("Impossible de supprimer ce calque.\n");
-                }
                 break;
             case 27:
                 printf("escap) Fin du programme\n");
