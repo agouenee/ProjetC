@@ -9,6 +9,9 @@ typedef struct Image {
     unsigned char* pixel;
 } Image;
 
+typedef struct Layer Layer;
+
 Image* openImage(char* path);
+Image* createFinalImage(Layer* l);
 
 #endif
