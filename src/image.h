@@ -7,7 +7,7 @@ typedef struct Image {
     unsigned int width;
     unsigned int max;
     unsigned char* pixel;
-} Image;
+}Image;
 
 Image* openImage(char* path);
 
