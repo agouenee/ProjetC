@@ -84,7 +84,8 @@ void lutMenu() {
     printf("\n-------------------- Menu LUT --------------------\n\n");
     printf("[m] Augmenter la luminosite\n");
     printf("[n] Diminuer la luminosite\n");
-    printf("[o] Effet Sépia\n");
+    printf("[o] Mettre en niveaux de gris\n");
+    printf("[p] Appliquer l'effet sépia\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -240,9 +241,15 @@ int main(void) {
                         lutMenu();
                         break;
                     case 'o' :
-                        printf("Effet Sepia\n");
+                        printf("Effet noir et blanc\n");
+                        greyScale(selected->source);
+                        //setModif(selected, &lutable);
+                        lutMenu();
+                        break;
+                    case 'p' :
+                        printf("Effet sepia\n");
                         sepia(&lutable, selected->source);
-                        setModif(selected, &lutable);
+                        //setModif(selected, &lutable);
                         lutMenu();
                         break;
 
