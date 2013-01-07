@@ -72,19 +72,19 @@ void mainMenu() {
 }
 void layerMenu() {
     printf("\n------------------- Menu calque ------------------\n\n");
-    printf("[c] Ajouter un nouveau calque image\n");
-    printf("[m] Modifier le type de melange du calque\n");
-    printf("[o] Modifier l'opacite du calque\n");
-    printf("[n] Ajouter un calque vide\n");
-    printf("[x] Supprimer un calque\n");
+    printf("[a] Ajouter un nouveau calque image\n");
+    printf("[b] Modifier le type de melange du calque\n");
+    printf("[c] Modifier l'opacite du calque\n");
+    printf("[d] Ajouter un calque vide\n");
+    printf("[e] Supprimer un calque\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
 void lutMenu() {
     printf("\n-------------------- Menu LUT --------------------\n\n");
-    printf("[a] Augmenter la luminosite\n");
-    printf("[b] Diminuer la luminosite\n");
-    printf("[d] Effet Sépia\n");
+    printf("[m] Augmenter la luminosite\n");
+    printf("[n] Diminuer la luminosite\n");
+    printf("[o] Effet Sépia\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -119,7 +119,7 @@ int main(void) {
                 layerMenu();
                 printf("(%c) ", c);
                 break;
-                    case 'c':
+                    case 'a':
                         printf("Ajout d'un nouveau calque image (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
                         printf("    Saisir le nom du fichier à ouvrir (ex: france.ppm): ");
                         scanf("%s", fileName);
@@ -133,7 +133,7 @@ int main(void) {
                         selected = imgPPM;
                         layerMenu();
                         break;
-                    case 'm':
+                    case 'b':
                         printf("Modification du type de mélange du calque\n");
                         if(selected->prev != NULL) {
                             printf("    Mélange actuel du calque: ");
@@ -157,7 +157,7 @@ int main(void) {
                         }
                         layerMenu();
                         break;
-                    case 'o':
+                    case 'c':
                         printf("Modification de l'opacité du calque\n");
                         if(selected->prev != NULL) {
                             printf("    Opacité actuelle du calque: %f\n", selected->opacity);
@@ -175,7 +175,7 @@ int main(void) {
                         }
                         layerMenu();
                         break;
-                    case 'n':
+                    case 'd':
                         printf("Ajout d'un nouveau calque vide (%d x %d)\n", imgRoot->source->width, imgRoot->source->height);
                         // Ajout du calque
                         empty = addEmptyLayer(++idLayer, imgRoot, selected);
@@ -186,7 +186,7 @@ int main(void) {
                         selected = empty;
                         layerMenu();
                         break;
-                    case 'x':
+                    case 'e':
                         printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
                         tmp = selected->prev;
                         test = suppLayer(selected);
@@ -205,7 +205,7 @@ int main(void) {
             case '2' :
                 lutMenu();
                 break;
-                    case 'a':
+                    case 'm':
                         printf("Augmentation de la luminosite\n");
                         printf("    Entrez une valeur entre 0 et 255 : ");
                         scanf("%d", &val);
@@ -222,7 +222,7 @@ int main(void) {
                         }
                         lutMenu();
                         break;
-                    case 'b':
+                    case 'n':
                         printf("Diminution de la luminosite\n");
                         printf("    Entrez une valeur entre 0 et 255 : ");
                         scanf("%d", &val);
@@ -239,7 +239,7 @@ int main(void) {
                         }
                         lutMenu();
                         break;
-                    case 'd' :
+                    case 'o' :
                         printf("Effet Sepia\n");
                         sepia(&lutable, selected->source);
                         setModif(selected, &lutable);
