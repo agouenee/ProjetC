@@ -55,7 +55,7 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix,
             selected->next = l;
         }
 
-        l = modifLayer(l);
+        //l = modifLayer(l);
 
         /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
         if(l->pixel == NULL) {
@@ -124,7 +124,7 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
                 }
 
 
-                l = modifLayer(l);
+                //l = modifLayer(l);
 
                 /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
                 if(l->pixel == NULL) {
@@ -162,7 +162,7 @@ Layer* modifLayerMix(Layer* selected, unsigned int mix) {
 }
 
 // Modification de l'apparence du calque après modification de l'opacité et/ou du type mélange
-Layer* modifLayer(Layer* selected) {
+/*Layer* modifLayer(Layer* selected) {
     if(selected->prev != NULL) {
         int i;
         // Si le mélange est multiplicatif
@@ -179,7 +179,7 @@ Layer* modifLayer(Layer* selected) {
         }
     }
     return selected;
-}
+}*/
 
 // Supression d'un calque (CAL_5)
 int suppLayer(Layer* selected) {

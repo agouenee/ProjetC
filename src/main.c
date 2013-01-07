@@ -147,7 +147,7 @@ int main(void) {
                             scanf("%d", &mix);
                             selected = modifLayerMix(selected, mix);
                             // Modification de l'apparence du calque avec son nouveau mélange
-                            selected = modifLayer(selected);
+                            //selected = modifLayer(selected);
                             // Affichage dans IHM
                             actualiseImage(selected->source->pixel);
                         }
@@ -165,7 +165,7 @@ int main(void) {
                             scanf("%f", &opacity);
                             selected = modifLayerOpacity(selected, opacity);
                             // Modification de l'apparence du calque avec sa nouvelle opacité
-                            selected = modifLayer(selected);
+                            //selected = modifLayer(selected);
                             // Affichage dans IHM
                             actualiseImage(selected->source->pixel);
                         }
