@@ -32,19 +32,27 @@ Les calques dépendent d'une image source :
 	une image complètement blanche pour un calque vide
 	une image PPM pour un calque image
 La structure calque possède un lien vers cette image source qui permet d'avoir accès aux informations de l'image originale via le calque.
-
-(Le calque a également un tableau de pixel (comme la structure image) qui contient soit :
+Le calque a également un tableau de pixel (comme la structure image) qui contient soit :
 	les valeurs originales des pixels de l'image source (calque->pixel = calque->source->pixel)
 	les valeurs re-calculées des pixels de l'image source après modification de l'opacité et/ou du type de mélange
 L'image ouverte n'est jamais modifié : le tableau de pixels de la structure image créé à son chargement reste inchangé.
-C'est le calque auquel est associé l'image qui est modifié. Autrement dit, c'est le tableau calque->pixel qui est re-calculé et non calque->source->pixel.)
+C'est le calque auquel est associé l'image qui est modifié. Autrement dit, c'est le tableau calque->pixel qui est re-calculé et non calque->source->pixel.
 
 ----- Opacité et type de mélange -----
-Il est impossible de modifier l'opacité ou le type de mélange du calque initial (correspondant à l'image PPM ouverte en premier) :
-Opacité et type de mélange sont des paramètres dépendants du calque précédant le calque courant (calque->prev), or le calque initial n'a aucun calque précédent 
-(calque->prev = NULL).
-Seuls les calques situés au-dessus de ce premier calque peuvent être modifiés.
-
-(La modification de l'opacité ou du type de mélange d'un calque est directement visible à l'écran.
+La modification de l'opacité ou du type de mélange d'un calque est directement visible à l'écran (en mode image finale).
 En revanche, si un calque C est modifié, le calque C+1 au-dessus de ce dernier, ne sera plus à jour : 
-son aperçu dans l'IHM correspondra au calcul précédemment effectué, avant la modification du calque C (avec les valeurs initiales des pixels du calque C).)
+son aperçu dans l'IHM correspondra au calcul précédemment effectué, avant la modification du calque C (avec les valeurs initiales des pixels du calque C).
+Les nouveaux pixels calculés suite à une modification d'opacité ou de mélange sont enregistrés dans le tableau de pixel du calque et non de l'image source.
+En revanche, à chaque modification, ils sont re-calculés à partir des pixels de l'image source.
+
+----- LUT -----
+Idem que opacité et type de mélange : 
+Les nouveaux pixels calculés suite à une modification d'opacité ou de mélange sont enregistrés dans le tableau de pixel du calque et non de l'image source.
+En revanche, à chaque modification, ils sont re-calculés à partir des pixels de l'image source.
+
+----- Modes de vue -----
+Il y deux modes de vue :
+	image finale (par défaut)
+	image source
+Le mode de vue image finale permet de voir toutes les modifications apportées aux calques (opacité, mélange, lut).
+Le mode de vue image source permet de voir les images sources originales des calques avant toutes modifications (telles que les images ont été ouvertes dans le programme).

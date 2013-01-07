@@ -57,14 +57,14 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix,
 
         //l = modifLayer(l);
 
-        /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+        l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
         if(l->pixel == NULL) {
             // Problème allocation mémoire tableau pixels
             return NULL;
         }
         else {
             l = modifLayer(l);
-        }*/
+        }
     }
 
     return l;
@@ -123,17 +123,16 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
                     selected->next = l;
                 }
 
-
                 //l = modifLayer(l);
 
-                /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+                l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
                 if(l->pixel == NULL) {
                     // Problème allocation mémoire tableau pixels
                     return NULL;
                 }
                 else {
                     l = modifLayer(l);
-                }*/
+                }
             }
         }
     }
@@ -143,43 +142,57 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
 
 // Modification de l'opacité d'un calque (CAL_3)
 Layer* modifLayerOpacity(Layer* selected, float opacity) {
-    if(selected->prev != NULL) {
+    //if(selected->prev != NULL) {
         if(opacity >= 0.0 && opacity <= 1.0) {
             selected->opacity = opacity;
         }
-    }
+    //}
     return selected;
 }
 
 // Modification du type de mélange (CAL_4)
 Layer* modifLayerMix(Layer* selected, unsigned int mix) {
-    if(selected->prev != NULL) {
+    //if(selected->prev != NULL) {
         if(mix == 0 || mix == 1) {
             selected->mix = mix;
         }
-    }
+    //}
     return selected;
 }
 
 // Modification de l'apparence du calque après modification de l'opacité et/ou du type mélange
-/*Layer* modifLayer(Layer* selected) {
+Layer* modifLayer(Layer* selected) {
+    int i;
     if(selected->prev != NULL) {
-        int i;
         // Si le mélange est multiplicatif
         if(selected->mix == 1) {
             for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
-                selected->source->pixel[i] = (1 - selected->opacity)*selected->prev->source->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+                selected->pixel[i] = (1 - selected->opacity)*selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
             }
         }
         // Si le mélange est additif
         else if(selected->mix == 0) {
             for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
-                selected->source->pixel[i] = selected->prev->source->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+                selected->pixel[i] = selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+            }
+        }
+    }
+    else if(selected->prev == NULL) {
+        // Si le mélange est multiplicatif
+        if(selected->mix == 1) {
+            for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
+                selected->pixel[i] = selected->opacity*selected->source->pixel[i];
+            }
+        }
+        // Si le mélange est additif
+        else if(selected->mix == 0) {
+            for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
+                selected->pixel[i] = selected->opacity*selected->source->pixel[i];
             }
         }
     }
     return selected;
-}*/
+}
 
 // Supression d'un calque (CAL_5)
 int suppLayer(Layer* selected) {

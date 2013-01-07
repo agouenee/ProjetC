@@ -177,8 +177,12 @@ void setModif(Layer* myLayer, Lut* lutable)
 	int i;
 	int length = (myLayer->source->height) * (myLayer->source->width) * 3;
 	for(i=0; i<length; i+=3) {
-		myLayer->source->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
+		/*myLayer->source->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
 		myLayer->source->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
-		myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);
+		myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);*/
+
+		myLayer->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
+		myLayer->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
+		myLayer->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);
 	}
 }
