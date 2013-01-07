@@ -8,8 +8,8 @@
 #include <stdlib.h>
 
 #include "layer.h"
-#include "lut.h"
 #include "image.h"
+#include "lut.h"
 
 
 // Initialisation de la LUT
@@ -87,6 +87,49 @@ void dimLum(Lut* lutable, int val)
  			lutable->tabB[i] = 255;
  		else
    			lutable->tabB[i] = lutable->tabB[i]-val;
+	}
+}
+void greyScale(Image* img)
+{
+	int i;
+	int length = (img->width)*(img->height) *3;
+	for (i=0; i<length; i+=3) {
+		img->pixel[i] = (img->pixel[i] + img->pixel[i+1] + img->pixel[i+2])/3;
+		img->pixel[i+1] = (img->pixel[i] + img->pixel[i+1] + img->pixel[i+2])/3;
+		img->pixel[i+2] = (img->pixel[i] + img->pixel[i+1] + img->pixel[i+2])/3;
+	}
+}
+void sepia (Lut* lutable, Image* img)
+{
+	greyScale(img);
+	greyScale(img);
+	greyScale(img);
+	color(lutable, 100, 50, 0);
+}
+void color(Lut* lutable, int R, int V, int B)
+{
+	int i;
+	for (i=0; i<256; i++) {		
+	if((lutable->tabR[i]+R)<0)
+			lutable->tabR[i] = 0;
+		else if((lutable->tabR[i]+R)>255)
+			lutable->tabR[i] = 255;
+		else
+			lutable->tabR[i] = lutable->tabR[i]+R;
+			
+		if((lutable->tabV[i]+V)<0)
+			lutable->tabV[i] = 0;
+		else if((lutable->tabV[i]+V)>255)
+			lutable->tabV[i] = 255;
+		else
+			lutable->tabV[i] = lutable->tabV[i]+V;
+			
+		if((lutable->tabB[i]+B)<0)
+			lutable->tabB[i] = 0;
+		else if((lutable->tabB[i]+B)>255)
+			lutable->tabB[i] = 255;
+		else
+			lutable->tabB[i] = lutable->tabB[i]+B;
 	}
 }
 

@@ -84,6 +84,7 @@ void lutMenu() {
     printf("\n-------------------- Menu LUT --------------------\n\n");
     printf("[a] Augmenter la luminosite\n");
     printf("[b] Diminuer la luminosite\n");
+    printf("[d] Effet Sépia\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -236,6 +237,12 @@ int main(void) {
                             //remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                         }
+                        lutMenu();
+                        break;
+                    case 'd' :
+                        printf("Effet Sepia\n");
+                        sepia(&lutable, selected->source);
+                        setModif(selected, &lutable);
                         lutMenu();
                         break;
 
