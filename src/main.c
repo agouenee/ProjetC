@@ -247,6 +247,7 @@ int main(void) {
                         break;
 
             case '3':
+                // Changer de mode de vue (IHM_1)
                 printf("Mode de vue \n");
                 if(view == 0) {
                     printf("Image finale \n");
@@ -261,6 +262,11 @@ int main(void) {
                 }
                 break;
 
+            case '4' :
+                // Enregistrement image finale (IM_2)
+                printf("Enregistrer l'image finale\n");
+                finalImg = createFinalImage(imgRoot);
+                saveFinalImage(finalImg, "../images/test.ppm");
             case 'r' :
                 mainMenu();
                 break;
