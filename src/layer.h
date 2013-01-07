@@ -9,7 +9,7 @@ typedef struct Layer {
     float opacity;
     unsigned int mix;
     //lut* lut;
-    unsigned char* pixel; /* pixel = source->pixel, permet modification apparence calque tout en gardant valeurs pixels image */
+    //unsigned char* pixel; /* pixel = source->pixel, permet modification apparence calque tout en gardant valeurs pixels image */
 } Layer;
 
 Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix, Layer* selected);

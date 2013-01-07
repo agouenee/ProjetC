@@ -19,6 +19,7 @@ Pixels de l'image
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "layer.h"
 #include "image.h"
 
 // Chargement et ouverture de l'image (IM_1)
@@ -78,4 +79,58 @@ Image* openImage(char* path) {
             return img;
         }
     }  
+}
+
+// Création de l'image finale
+Image* createFinalImage(Layer* l) {
+    Image* finalImg = (Image*) malloc(sizeof(Image));
+    if(finalImg == NULL) {
+        // Problème allocation mémoire structure image
+        return NULL;
+    }
+    else {
+        finalImg->type = '6';
+        finalImg->width = l->source->width;
+        finalImg->height = l->source->height;
+        finalImg->max = l->source->max;
+        finalImg->pixel = (unsigned char*) malloc((finalImg->width)*(finalImg->height)*3*sizeof(unsigned char));
+        if(finalImg->pixel == NULL) {
+            // Erreur allocation mémoire tableau de pixels
+            return NULL;
+        }
+        else {
+            // Initialisation du tableau de pixels de l'image finale avec les valeurs du tableau du calque initial (image de départ)
+            int i;
+            for(i = 0; i < (finalImg->width)*(finalImg->height)*3; i++) {
+                finalImg->pixel[i] = l->source->pixel[i];
+            }
+
+            Layer* selected = (Layer*) malloc(sizeof(Layer));
+            if(selected == NULL) {
+                // Problème allocatiion mémoire structure calque
+                return NULL;
+            }
+            else {
+                selected = l->next;
+                int j;
+                while(selected != NULL) {
+                    // Si le mélange est multiplicatif
+                    if(selected->mix == 1) {
+                        for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
+                            finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                        }
+                    }
+                    // Si le mélange est additif
+                    else if(selected->mix == 0) {
+                        printf("Hey 2 !\n");
+                        for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
+                            finalImg->pixel[j] = selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                        }
+                    }
+                    selected = selected->next;
+                }
+            }  
+        }
+    }
+    return finalImg;
 }

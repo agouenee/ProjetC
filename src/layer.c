@@ -55,14 +55,16 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix,
             selected->next = l;
         }
 
-        l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+        l = modifLayer(l);
+
+        /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
         if(l->pixel == NULL) {
             // Problème allocation mémoire tableau pixels
             return NULL;
         }
         else {
             l = modifLayer(l);
-        }
+        }*/
     }
 
     return l;
@@ -121,15 +123,17 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
                     selected->next = l;
                 }
 
-                l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
+
+                l = modifLayer(l);
+
+                /*l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
                 if(l->pixel == NULL) {
                     // Problème allocation mémoire tableau pixels
                     return NULL;
                 }
                 else {
                     l = modifLayer(l);
-                }
-
+                }*/
             }
         }
     }
@@ -164,13 +168,13 @@ Layer* modifLayer(Layer* selected) {
         // Si le mélange est multiplicatif
         if(selected->mix == 1) {
             for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
-                selected->pixel[i] = (1 - selected->opacity)*selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+                selected->source->pixel[i] = (1 - selected->opacity)*selected->prev->source->pixel[i] + (selected->opacity*selected->source->pixel[i]);
             }
         }
         // Si le mélange est additif
         else if(selected->mix == 0) {
             for(i = 0; i < selected->source->width*selected->source->height*3; i++) {
-                selected->pixel[i] = selected->prev->pixel[i] + (selected->opacity*selected->source->pixel[i]);
+                selected->source->pixel[i] = selected->prev->source->pixel[i] + (selected->opacity*selected->source->pixel[i]);
             }
         }
     }
