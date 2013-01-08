@@ -137,19 +137,16 @@ Image* createFinalImage(Layer* l) {
 // Sauvegarde de l'image finale
 void saveFinalImage(Image* img, char* fileName) {
     // Création et ouverture en écriture du fichier final (vide)
-    FILE* finalImgFile = fopen(fileName, "a");
-    int nb_char;
-    /*if(finalImgFile == NULL) {
+    FILE* finalImgFile = fopen(fileName, "w");
+    if(finalImgFile == NULL) {
         // Erreur ouverture fichier
-    }*/
+    }
     // Ecriture des données de l'image
-    /*else {*/
-        //fputs("P6", finalImgFile);
-        nb_char = fprintf(finalImgFile, "P6\n%d %d\n%d", img->width, img->height, img->max);
-        int i;
-        for(i = 0; i < (img->height)*(img->width)*3; i++) {
-            nb_char = fprintf(finalImgFile, "%c ", img->pixel[i]);
-        }
-    /*}*/
+    else {
+        // Ecriture de l'en-tête (type, commentaires, dimensions, valeur max)
+        fprintf(finalImgFile, "P6\n# Image Imagimp par Katia et Audrey\n%d %d\n%d\n", img->width, img->height, img->max);
+        // Ecriture des pixels
+        fwrite(img->pixel, sizeof(unsigned char), (img->height)*(img->width)*3, finalImgFile);
+    }
     fclose(finalImgFile);
 }

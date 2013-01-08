@@ -181,8 +181,8 @@ void setModif(Layer* myLayer, Lut* lutable)
 		myLayer->source->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
 		myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);*/
 
-		myLayer->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
-		myLayer->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
-		myLayer->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);
+		myLayer->pixel[i]=(unsigned char)(lutable->tabR[myLayer->pixel[i]]);
+		myLayer->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->pixel[i+1]]);
+		myLayer->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->pixel[i+2]]);
 	}
 }

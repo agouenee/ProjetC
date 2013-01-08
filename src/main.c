@@ -75,6 +75,7 @@ void mainMenu() {
     printf("[1] Accéder au menu calque\n");
     printf("[2] Accéder au menu LUT\n");
     printf("[3] Changer de mode de vue\n");
+    printf("[4] Sauvegarder l'image finale\n");
     printf("\n--------------------------------------------------\n\n");
 }
 void layerMenu() {
@@ -153,12 +154,7 @@ int main(void) {
                         printf("    Saisir le nouveau mélange.\n");
                         printf("    0 (additif) ou 1 (multiplicatif): ");
                         scanf("%d", &mix);
-                        if(mix != 0 || mix != 1) {
-                            printf("    Erreur : valeur incorrecte\n");
-                            printf("    Modification du type de mélange non effectuee.\n\n");
-                            //layerMenu();
-                        }
-                        else {
+                        if(mix == 0 || mix == 1) {
                             selected = modifLayerMix(selected, mix);
                             // Modification de l'apparence du calque avec son nouveau mélange
                             selected = modifLayer(selected);
@@ -169,6 +165,11 @@ int main(void) {
                             else {
                                 actualiseImage(selected->source->pixel);
                             }
+                        }
+                        else {
+                            printf("    Erreur : valeur incorrecte\n");
+                            printf("    Modification du type de mélange non effectuee.\n\n");
+                            //layerMenu();
                         }
                         layerMenu();
                         break;
@@ -311,9 +312,12 @@ int main(void) {
 
             case '4' :
                 // Enregistrement image finale (IM_2)
-                /*printf("Enregistrer l'image finale\n");
+                printf("Enregistrement de l'image finale\n");
                 finalImg = createFinalImage(imgRoot);
-                saveFinalImage(finalImg, "../images/test.ppm");*/
+                printf("Saisir le nom du fichier à enregistrer (fichier.ppm)\n");
+                scanf("%s", fileName);
+                sprintf(path, "../images/%s", fileName);
+                saveFinalImage(finalImg, path);
             case 'r' :
                 mainMenu();
                 break;
