@@ -163,6 +163,7 @@ Layer* modifLayerMix(Layer* selected, unsigned int mix) {
 // Modification de l'apparence du calque après modification de l'opacité et/ou du type mélange
 Layer* modifLayer(Layer* selected) {
     int i;
+    // S'il y a un calque précédent
     if(selected->prev != NULL) {
         // Si le mélange est multiplicatif
         if(selected->mix == 1) {
@@ -177,6 +178,7 @@ Layer* modifLayer(Layer* selected) {
             }
         }
     }
+    // Sinon, s'il n'y a pas de calque précédent
     else if(selected->prev == NULL) {
         // Si le mélange est multiplicatif
         if(selected->mix == 1) {

@@ -143,7 +143,7 @@ void saveFinalImage(Image* img, char* fileName) {
     }
     // Ecriture des données de l'image
     else {
-        // Ecriture de l'en-tête (type, commentaires, dimensions, valeur max)
+        // Ecriture de l'en-tête (type, commentaire, dimensions, valeur max)
         fprintf(finalImgFile, "P6\n# Image Imagimp par Katia et Audrey\n%d %d\n%d\n", img->width, img->height, img->max);
         // Ecriture des pixels
         fwrite(img->pixel, sizeof(unsigned char), (img->height)*(img->width)*3, finalImgFile);

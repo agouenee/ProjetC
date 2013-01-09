@@ -211,7 +211,12 @@ int main(void) {
                         break;
                     case 'e':
                         printf("Suppression du calque sélectionné (calque %d)\n", selected->id);
-                        tmp = selected->prev;
+                        if(selected->prev != NULL) {
+                            tmp = selected->prev;
+                        }
+                        else {
+                            tmp = selected->next;
+                        }
                         test = suppLayer(selected);
                         if(test == 1) {
                             printf("Calque supprimé\n");
@@ -226,7 +231,7 @@ int main(void) {
                             }
                         }
                         else {
-                            printf("Impossible de supprimer ce calque.\n");
+                            printf("Impossible de supprimer le dernier calque.\n");
                         }
                         layerMenu();
                         break;
