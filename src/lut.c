@@ -21,6 +21,19 @@ void initLUT(Lut* lutable) {
 		lutable->tabB[i] = i;
 	}
 }
+Lut* addLut(int type, Lut* previous) {
+	Lut* newLut;
+
+	newLut= (Lut*)malloc(sizeof(Lut));
+	newLut->type = type;
+
+	if(previous != NULL) {
+		previous->next= newLut;
+	}
+	newLut->next= NULL;
+	
+	return newLut;
+}
 
 //Augmenter la luminosité
 void addLum(Lut* lutable, int val) 
@@ -113,36 +126,41 @@ void greyScale(Image* img)
 		img->pixel[i+2] = b;
 	}
 }
-void sepia (Lut* lutable, Image* img)
+/*void sepia (Lut* lutable, Image* img)
 {
-	int i;
-	int length = (img->width)*(img->height) *3;
-	for (i=0; i<length; i+=3) {
-		int r = img->pixel[i];
-		int rf = r;
-		int v = img->pixel[i+1];
-		int vf = v;
-		int b = img->pixel[i+2];
-		int bf = b;
+	greyScale(img);
+	color(lutable, 100, 50, 0);
+}*/
+int sepia(Lut* lutable) {
 
-		//int grey = (r + v + b) / 3;
-		//r = v = b = grey;
-
-		rf = (r * 0.393 + v * 0.769 + b * 0.189);
-		vf = (r * 0.349 + v * 0.686 + b * 0.168);
-		bf = (r * 0.272 + v * 0.534 + b * 0.131);
-
-		if (rf>255) 
-			rf = 255;
-		if (vf>255) 
-			vf = 255;
-		if (bf>255) 
-			bf = 255;
-
-		img->pixel[i] = rf;
-		img->pixel[i+1]= vf;
-		img->pixel[i+2] = bf;
+	int i = 0;
+	int valR = 0, valV = 0, valB = 0;
+	
+	if(lutable == NULL) {
+		return 0;
 	}
+	
+	// Rouge
+	for(i=0; i<256; i++){
+		valR= i + 80;
+		if(valR > 255){
+			valR = 255;
+		}
+		lutable->tabR[i] = valR;
+
+		valV= i + 30;
+		if(valV > 255){
+			valR = 255;
+		}
+		lutable->tabV[i] = valV;
+
+		valB= i - 40;
+		if(valB < 0){
+			valB = 0;
+		}
+		lutable->tabB[i] = valB;
+	}
+	return 1;
 }
 void color(Lut* lutable, int R, int V, int B)
 {

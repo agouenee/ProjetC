@@ -248,8 +248,14 @@ int main(void) {
                         break;
                     case 'p' :
                         printf("Effet sepia\n");
-                        sepia(&lutable, selected->source);
-                        //setModif(selected, &lutable);
+                        greyScale(selected->source);
+                        int sepiaEffect = sepia(&lutable);
+                        if(sepiaEffect == 0) {
+                            printf(" Erreur effet sepia non effectue\n");
+                        }
+                        else {
+                            setModif(selected, &lutable);
+                        }
                         lutMenu();
                         break;
 
