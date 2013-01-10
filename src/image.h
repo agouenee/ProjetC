@@ -13,5 +13,6 @@ typedef struct Layer Layer;
 
 Image* openImage(char* path);
 Image* createFinalImage(Layer* l);
+void saveFinalImage(Image* img, char* fileName);
 
 #endif

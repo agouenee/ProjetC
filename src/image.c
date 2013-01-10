@@ -122,7 +122,6 @@ Image* createFinalImage(Layer* l) {
                     }
                     // Si le mélange est additif
                     else if(selected->mix == 0) {
-                        printf("Hey 2 !\n");
                         for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
                             finalImg->pixel[j] = selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
                         }
@@ -133,4 +132,21 @@ Image* createFinalImage(Layer* l) {
         }
     }
     return finalImg;
+}
+
+// Sauvegarde de l'image finale
+void saveFinalImage(Image* img, char* fileName) {
+    // Création et ouverture en écriture du fichier final (vide)
+    FILE* finalImgFile = fopen(fileName, "w");
+    if(finalImgFile == NULL) {
+        // Erreur ouverture fichier
+    }
+    // Ecriture des données de l'image
+    else {
+        // Ecriture de l'en-tête (type, commentaire, dimensions, valeur max)
+        fprintf(finalImgFile, "P6\n# Image Imagimp par Katia et Audrey\n%d %d\n%d\n", img->width, img->height, img->max);
+        // Ecriture des pixels
+        fwrite(img->pixel, sizeof(unsigned char), (img->height)*(img->width)*3, finalImgFile);
+    }
+    fclose(finalImgFile);
 }
