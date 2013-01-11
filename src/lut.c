@@ -102,7 +102,7 @@ void dimLum(Lut* lutable, int val)
 			lutable->tabB[i] = lutable->tabB[i]-val;
 	}
 }
-void greyScale(Image* img)
+/*void greyScale(Image* img)
 {
 	int i;
 	int length = (img->width)*(img->height) *3;
@@ -124,6 +124,29 @@ void greyScale(Image* img)
 		img->pixel[i] = r;
 		img->pixel[i+1]= v;
 		img->pixel[i+2] = b;
+	}
+}*/
+void greyScale(Layer* myLayer) {
+	int i;
+	int length = (myLayer->source->width)*(myLayer->source->height)*3;
+	for (i=0; i<length; i+=3) {
+		int r = myLayer->pixel[i];
+		int v = myLayer->pixel[i+1];
+		int b = myLayer->pixel[i+2];
+		int grey = (r + v + b) / 3;
+
+		r = v = b = grey;
+
+		if (r>255) 
+			r = 255;
+		if (v>255) 
+			v = 255;
+		if (b>255) 
+			b = 255;
+
+		myLayer->pixel[i] = r;
+		myLayer->pixel[i+1] = v;
+		myLayer->pixel[i+2] = b;
 	}
 }
 /*void sepia (Lut* lutable, Image* img)

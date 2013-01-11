@@ -289,19 +289,32 @@ int main(void) {
                         break;
                     case 'o' :
                         printf("Effet noir et blanc\n");
-                        greyScale(selected->source);
-                        //setModif(selected, &lutable);
+                        greyScale(selected);
+                        // Affichage IHM
+                        if(view == 0) {
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            actualiseImage(selected->source->pixel);
+                        }
                         lutMenu();
                         break;
                     case 'p' :
                         printf("Effet sepia\n");
-                        greyScale(selected->source);
+                        greyScale(selected);
                         int sepiaEffect = sepia(&lutable);
                         if(sepiaEffect == 0) {
                             printf(" Erreur effet sepia non effectue\n");
                         }
                         else {
                             setModif(selected, &lutable);
+                            // Affichage IHM
+                            if(view == 0) {
+                                actualiseImage(selected->pixel);
+                            }
+                            else {
+                                actualiseImage(selected->source->pixel);
+                            }
                         }
                         lutMenu();
                         break;
@@ -324,10 +337,12 @@ int main(void) {
             case '4' :
                 // Enregistrement image finale (IM_2)
                 printf("Enregistrement de l'image finale\n");
+                // Création de l'image finale
                 finalImg = createFinalImage(imgRoot);
                 printf("Saisir le nom du fichier à enregistrer (fichier.ppm)\n");
                 scanf("%s", fileName);
                 sprintf(path, "../images/%s", fileName);
+                // Sauvegarde de l'image finale
                 saveFinalImage(finalImg, path);
             case 'r' :
                 mainMenu();
