@@ -102,30 +102,6 @@ void dimLum(Lut* lutable, int val)
 			lutable->tabB[i] = lutable->tabB[i]-val;
 	}
 }
-/*void greyScale(Image* img)
-{
-	int i;
-	int length = (img->width)*(img->height) *3;
-	for (i=0; i<length; i+=3) {
-		int r = img->pixel[i];
-		int v = img->pixel[i+1];
-		int b = img->pixel[i+2];
-		int grey = (r + v + b) / 3;
-
-		r = v = b = grey;
-
-		if (r>255) 
-			r = 255;
-		if (v>255) 
-			v = 255;
-		if (b>255) 
-			b = 255;
-
-		img->pixel[i] = r;
-		img->pixel[i+1]= v;
-		img->pixel[i+2] = b;
-	}
-}*/
 void greyScale(Layer* myLayer) {
 	int i;
 	int length = (myLayer->source->width)*(myLayer->source->height)*3;
@@ -179,6 +155,114 @@ int sepia(Lut* lutable) {
 			valB = 0;
 		}
 		lutable->tabB[i] = valB;
+	}
+	return 1;
+}
+int addContrast(Lut* lutable, int val) {
+	int i = 0;
+	int newVal = 0;
+	
+	if(lutable == NULL) {
+		return 0;
+	}
+	
+	for(i=0; i<128; i++) {
+		// Rouge
+		newVal=lutable->tabR[i] - val;
+		if(newVal < 0) {
+			newVal = 0;
+		}
+		lutable->tabR[i] = newVal;
+
+		// Vert
+		newVal=lutable->tabV[i] - val;
+		if(newVal < 0) {
+			newVal = 0;
+		}
+		lutable->tabV[i] = newVal;
+
+		// Bleau
+		newVal=lutable->tabB[i] - val;
+		if(newVal < 0) {
+			newVal = 0;
+		}
+		lutable->tabB[i] = newVal;
+	}
+	for(i=128; i<255; i++) {
+		// Rouge
+		newVal=lutable->tabR[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabR[i] = newVal;
+
+		// Vert
+		newVal=lutable->tabV[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabV[i] = newVal;
+
+		// Bleau
+		newVal=lutable->tabB[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabB[i] = newVal;
+	}
+	return 1;
+}
+int dimContrast(Lut* lutable, int val) {
+	int i = 0;
+	int newVal = 0;
+	
+	if(lutable == NULL) {
+		return 0;
+	}
+	
+	for(i=0; i<128; i++) {
+		// Rouge
+		newVal=lutable->tabR[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabR[i] = newVal;
+
+		// Vert
+		newVal=lutable->tabV[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabV[i] = newVal;
+
+		// Bleau
+		newVal=lutable->tabB[i] + val;
+		if(newVal > 255) {
+			newVal = 255;
+		}
+		lutable->tabB[i] = newVal;
+	}
+	for(i=128; i<255; i++) {
+		// Rouge
+		newVal=lutable->tabR[i] - val;
+		if(newVal < 0) {
+			newVal = 0;
+		}
+		lutable->tabR[i] = newVal;
+
+		// Vert
+		newVal=lutable->tabV[i] - val;
+		if(newVal < 0) {
+			newVal = 255;
+		}
+		lutable->tabV[i] = newVal;
+
+		// Bleau
+		newVal=lutable->tabB[i] - val;
+		if(newVal < 0) {
+			newVal = 0;
+		}
+		lutable->tabB[i] = newVal;
 	}
 	return 1;
 }

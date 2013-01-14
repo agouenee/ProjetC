@@ -94,6 +94,8 @@ void lutMenu() {
     printf("[n] Diminuer la luminosite\n");
     printf("[o] Mettre en niveaux de gris\n");
     printf("[p] Appliquer l'effet sépia\n");
+    printf("[q] Augmenter le contraste\n");
+    printf("[s] Diminuer le contraste\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -305,6 +307,54 @@ int main(void) {
                         int sepiaEffect = sepia(&lutable);
                         if(sepiaEffect == 0) {
                             printf(" Erreur effet sepia non effectue\n");
+                        }
+                        else {
+                            setModif(selected, &lutable);
+                            // Affichage IHM
+                            if(view == 0) {
+                                actualiseImage(selected->pixel);
+                            }
+                            else {
+                                actualiseImage(selected->source->pixel);
+                            }
+                        }
+                        lutMenu();
+                        break;
+                    case 'q' :
+                        printf("Augmentation du contraste\n");
+                        printf("    Entrez une valeur entre 0 et 255 : ");
+                        scanf("%d", &val);
+                        int addContrastEffect = addContrast(&lutable, val);
+                        if(addContrastEffect == 0) {
+                            printf(" Erreur augmentation du contraste non effectue\n");
+                        }
+                        else if((val<0) || (val>255)) {
+                            printf("    Erreur : valeur non comprise entre 0 et 255\n");
+                            printf("    Augmentation du contraste non effectue.\n\n");
+                        }
+                        else {
+                            setModif(selected, &lutable);
+                            // Affichage IHM
+                            if(view == 0) {
+                                actualiseImage(selected->pixel);
+                            }
+                            else {
+                                actualiseImage(selected->source->pixel);
+                            }
+                        }
+                        lutMenu();
+                        break;
+                    case 's' :
+                        printf("Diminution du contraste\n");
+                        printf("    Entrez une valeur entre 0 et 255 : ");
+                        scanf("%d", &val);
+                        int dimContrastEffect = dimContrast(&lutable, val);
+                        if(dimContrastEffect == 0) {
+                            printf(" Erreur diminution du contraste non effectuee\n");
+                        }
+                        else if((val<0) || (val>255)) {
+                            printf("    Erreur : valeur non comprise entre 0 et 255\n");
+                            printf("    Diminution du contraste non effectuee.\n\n");
                         }
                         else {
                             setModif(selected, &lutable);
