@@ -126,11 +126,6 @@ void greyScale(Image* img)
 		img->pixel[i+2] = b;
 	}
 }
-/*void sepia (Lut* lutable, Image* img)
-{
-	greyScale(img);
-	color(lutable, 100, 50, 0);
-}*/
 int sepia(Lut* lutable) {
 
 	int i = 0;
@@ -140,20 +135,22 @@ int sepia(Lut* lutable) {
 		return 0;
 	}
 	
-	// Rouge
-	for(i=0; i<256; i++){
+	for(i=0; i<256; i++) {
+		// Rouge
 		valR= i + 80;
 		if(valR > 255){
 			valR = 255;
 		}
 		lutable->tabR[i] = valR;
 
+		// Vert
 		valV= i + 30;
 		if(valV > 255){
-			valR = 255;
+			valV = 255;
 		}
 		lutable->tabV[i] = valV;
 
+		// Bleu
 		valB= i - 40;
 		if(valB < 0){
 			valB = 0;
