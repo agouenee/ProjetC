@@ -102,7 +102,7 @@ Image* createFinalImage(Layer* l) {
             // Initialisation du tableau de pixels de l'image finale avec les valeurs du tableau du calque initial (image de départ)
             int i;
             for(i = 0; i < (finalImg->width)*(finalImg->height)*3; i++) {
-                finalImg->pixel[i] = l->source->pixel[i];
+                finalImg->pixel[i] = l->pixel[i];
             }
 
             Layer* selected = (Layer*) malloc(sizeof(Layer));
@@ -117,13 +117,15 @@ Image* createFinalImage(Layer* l) {
                     // Si le mélange est multiplicatif
                     if(selected->mix == 1) {
                         for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
-                            finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                            //finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                            finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->pixel[j] + (selected->opacity*selected->pixel[j]);
                         }
                     }
                     // Si le mélange est additif
                     else if(selected->mix == 0) {
                         for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
-                            finalImg->pixel[j] = selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                            //finalImg->pixel[j] = selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
+                            finalImg->pixel[j] = selected->prev->pixel[j] + (selected->opacity*selected->pixel[j]);
                         }
                     }
                     selected = selected->next;
