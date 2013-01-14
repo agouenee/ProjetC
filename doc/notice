@@ -40,15 +40,20 @@ C'est le calque auquel est associé l'image qui est modifié. Autrement dit, c'e
 
 ----- Opacité et type de mélange -----
 La modification de l'opacité ou du type de mélange d'un calque est directement visible à l'écran (en mode image finale).
-En revanche, si un calque C est modifié, le calque C+1 au-dessus de ce dernier, ne sera plus à jour : 
-son aperçu dans l'IHM correspondra au calcul précédemment effectué, avant la modification du calque C (avec les valeurs initiales des pixels du calque C).
 Les nouveaux pixels calculés suite à une modification d'opacité ou de mélange sont enregistrés dans le tableau de pixel du calque et non de l'image source.
 En revanche, à chaque modification, ils sont re-calculés à partir des pixels de l'image source.
+-- BUG -- 
+Si un calque C est modifié, le calque C+1 au-dessus de ce dernier, ne sera plus à jour : 
+son aperçu dans l'IHM correspondra au calcul précédemment effectué, avant la modification du calque C (avec les valeurs initiales des pixels du calque C).
+
 
 ----- LUT -----
 Idem que opacité et type de mélange : 
-Les nouveaux pixels calculés suite à une modification d'opacité ou de mélange sont enregistrés dans le tableau de pixel du calque et non de l'image source.
-En revanche, à chaque modification, ils sont re-calculés à partir des pixels de l'image source.
+L'application d'une LUT à un calque est directement visible à l'écran (en mode image finale).
+Les nouveaux pixels calculés suite à l'application d'une LUT sont enregistrés dans le tableau de pixel du calque et non de l'image source.
+A l'application d'une LUT, les pixels du calque ne sont pas re-calculés à partir des pixels de l'image source, c'est-à-dire que les LUT précédemment appliquées au calque sont prises en compte si une nouvelle LUT est appliquée (ex: si on diminue la luminosité d'une image, puis qu'on lui applique l'effet sépia, l'image finale visible à l'écran correspondra à la combinaison des deux LUT).
+-- BUG -- 
+Si on modifie l'opacité du calque ou son type de mélange après avoir appliqué une LUT, cette dernière n'est plus appliquée à l'image car les pixels sont recalculés à partir de l'image source (donc sans la LUT).
 
 ----- Modes de vue -----
 Il y deux modes de vue :

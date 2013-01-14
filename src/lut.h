@@ -18,7 +18,8 @@ typedef struct Lut {
 void initLUT(Lut* lutable);
 void addLum(Lut* lutable, int val);
 void dimLum(Lut* lutable, int val);
-void greyScale(Image* img);
+//void greyScale(Image* img);
+void greyScale(Layer* myLayer);
 int sepia (Lut* lutable);
 void color(Lut* lutable, int R, int V, int B);
 void setModif(Layer* myLayer, Lut* lutable);
