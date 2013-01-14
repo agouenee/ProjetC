@@ -223,44 +223,44 @@ int dimContrast(Lut* lutable, int val) {
 	for(i=0; i<128; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] + val;
-		if(newVal > 255) {
-			newVal = 255;
+		if(newVal > 128) {
+			newVal = 128;
 		}
 		lutable->tabR[i] = newVal;
 
 		// Vert
 		newVal=lutable->tabV[i] + val;
-		if(newVal > 255) {
-			newVal = 255;
+		if(newVal > 128) {
+			newVal = 128;
 		}
 		lutable->tabV[i] = newVal;
 
 		// Bleau
 		newVal=lutable->tabB[i] + val;
-		if(newVal > 255) {
-			newVal = 255;
+		if(newVal > 128) {
+			newVal = 128;
 		}
 		lutable->tabB[i] = newVal;
 	}
 	for(i=128; i<255; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] - val;
-		if(newVal < 0) {
-			newVal = 0;
+		if(newVal < 128) {
+			newVal = 128;
 		}
 		lutable->tabR[i] = newVal;
 
 		// Vert
 		newVal=lutable->tabV[i] - val;
-		if(newVal < 0) {
-			newVal = 255;
+		if(newVal < 128) {
+			newVal = 128;
 		}
 		lutable->tabV[i] = newVal;
 
 		// Bleau
 		newVal=lutable->tabB[i] - val;
-		if(newVal < 0) {
-			newVal = 0;
+		if(newVal < 128) {
+			newVal = 128;
 		}
 		lutable->tabB[i] = newVal;
 	}
