@@ -55,7 +55,7 @@ Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix,
             selected->next = l;
         }
 
-        //l = modifLayer(l);
+        //l->appliedLut = NULL;
 
         l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
         if(l->pixel == NULL) {
@@ -85,7 +85,6 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
         	return NULL;
         }
         else {
-            // white->type ???
             white->width = imgRoot->source->width;
             white->height = imgRoot->source->height;
             white->max = 255;
@@ -123,7 +122,7 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
                     selected->next = l;
                 }
 
-                //l = modifLayer(l);
+                //l->appliedLut = NULL;
 
                 l->pixel = (unsigned char*) malloc((l->source->width)*(l->source->height)*3*sizeof(unsigned char));
                 if(l->pixel == NULL) {

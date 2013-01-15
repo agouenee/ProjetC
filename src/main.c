@@ -34,6 +34,8 @@ Image* finalImg = NULL;
 
 // Lut
 Lut lutable;
+Lut* appliedLut = NULL;
+Lut* previous = NULL;
 
 // Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
@@ -112,7 +114,6 @@ int main(void) {
     sprintf(path, "../images/%s", fileNameRoot);
     // Création du calque de départ avec l'image PPM ouverte (calque 0)
     Layer* imgRoot = addImgLayer(path, idLayer, opacity, mix, NULL);
-    //imgRoot->pixel = imgRoot->source->pixel;
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
     mainMenu();
@@ -121,7 +122,7 @@ int main(void) {
     void kbdFunc(unsigned char c, int x, int y) {
         printf("(%c) ", c);
         switch(c) {
-            case 'i': // Exemple d'utilisation des fonctions de la bibliotheque glimagimp
+            case 'i':
                 printf("Information image et IHM\n");
                 printInfo();
                 mainMenu();
@@ -171,7 +172,6 @@ int main(void) {
                         else {
                             printf("    Erreur : valeur incorrecte\n");
                             printf("    Modification du type de mélange non effectuee.\n\n");
-                            //layerMenu();
                         }
                         layerMenu();
                         break;
@@ -184,7 +184,6 @@ int main(void) {
                         if(opacity < 0.0 || opacity > 1.0) {
                             printf("    Erreur : valeur non comprise entre 0.0 et 1.0\n");
                             printf("    Modification de l'opacité non effectuee.\n\n");
-                            //layerMenu();
                         }
                         else {
                             selected = modifLayerOpacity(selected, opacity);
@@ -248,12 +247,20 @@ int main(void) {
                         if(val < 0 || val > 255) {
                             printf("    Erreur : valeur non comprise entre 0 et 255\n");
                             printf("    Augmentation de la luminosite non effectuee.\n\n");
-                            //lutMenu();
                         }
                         else {
                             initLUT(&lutable);
                             addLum(&lutable, val);
-                            //remplissage d'une image avec les nouveaux pixels modifiés
+                            // Ajout de la LUT au calque
+                            /*if(selected->appliedLut == NULL) {
+                                previous = NULL;
+                            }
+                            else {
+                                previous = selected->appliedLut;
+                            }
+                            appliedLut = addLut(1, previous);
+                            selected->appliedLut = appliedLut;*/
+                            // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                             // Affichage IHM
                             if(view == 0) {
@@ -272,12 +279,20 @@ int main(void) {
                         if(val < 0 || val > 255) {
                             printf("    Erreur : valeur non comprise entre 0 et 255\n");
                             printf("    Diminution de la luminosite non effectuee.\n\n");
-                            //lutMenu();
                         }
                         else {
                             initLUT(&lutable);
                             dimLum(&lutable, val);
-                            //remplissage d'une image avec les nouveaux pixels modifiés
+                            // Ajout de la LUT au calque
+                            /*if(selected->appliedLut == NULL) {
+                                previous = NULL;
+                            }
+                            else {
+                                previous = selected->appliedLut;
+                            }
+                            appliedLut = addLut(2, previous);
+                            selected->appliedLut = appliedLut;*/
+                            // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                             // Affichage IHM
                             if(view == 0) {
@@ -309,6 +324,16 @@ int main(void) {
                             printf(" Erreur effet sepia non effectue\n");
                         }
                         else {
+                            // Ajout de la LUT au calque
+                            /*if(selected->appliedLut == NULL) {
+                                previous = NULL;
+                            }
+                            else {
+                                previous = selected->appliedLut;
+                            }
+                            appliedLut = addLut(3, previous);
+                            selected->appliedLut = appliedLut;*/
+                            // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                             // Affichage IHM
                             if(view == 0) {
@@ -333,6 +358,16 @@ int main(void) {
                             printf("    Augmentation du contraste non effectue.\n\n");
                         }
                         else {
+                            // Ajout de la LUT au calque
+                            /*if(selected->appliedLut == NULL) {
+                                previous = NULL;
+                            }
+                            else {
+                                previous = selected->appliedLut;
+                            }
+                            appliedLut = addLut(4, previous);
+                            selected->appliedLut = appliedLut;*/
+                            // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                             // Affichage IHM
                             if(view == 0) {
@@ -357,6 +392,16 @@ int main(void) {
                             printf("    Diminution du contraste non effectuee.\n\n");
                         }
                         else {
+                            // Ajout de la LUT au calque
+                            /*if(selected->appliedLut == NULL) {
+                                previous = NULL;
+                            }
+                            else {
+                                previous = selected->appliedLut;
+                            }
+                            appliedLut = addLut(5, previous);
+                            selected->appliedLut = appliedLut;*/
+                            // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
                             // Affichage IHM
                             if(view == 0) {

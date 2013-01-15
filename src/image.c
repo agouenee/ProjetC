@@ -107,28 +107,19 @@ Image* createFinalImage(Layer* l) {
 
             Layer* selected = (Layer*) malloc(sizeof(Layer));
             if(selected == NULL) {
-                // Problème allocatiion mémoire structure calque
+                // Problème allocation mémoire structure calque
                 return NULL;
             }
             else {
-                selected = l->next;
-                int j;
-                while(selected != NULL) {
-                    // Si le mélange est multiplicatif
-                    if(selected->mix == 1) {
-                        for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
-                            //finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
-                            finalImg->pixel[j] = (1 - selected->opacity)*selected->prev->pixel[j] + (selected->opacity*selected->pixel[j]);
-                        }
-                    }
-                    // Si le mélange est additif
-                    else if(selected->mix == 0) {
-                        for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
-                            //finalImg->pixel[j] = selected->prev->source->pixel[j] + (selected->opacity*selected->source->pixel[j]);
-                            finalImg->pixel[j] = selected->prev->pixel[j] + (selected->opacity*selected->pixel[j]);
-                        }
-                    }
+                selected = l;
+                // Positionnement sur le dernier calque de la pile
+                while(selected->next != NULL) {
                     selected = selected->next;
+                }
+                // Remplissage de l'image finale avec les pixels du dernier calque
+                int j;
+                for(j = 0; j < (finalImg->width)*(finalImg->height)*3; j++) {
+                    finalImg->pixel[j] = selected->pixel[j];
                 }
             }  
         }
