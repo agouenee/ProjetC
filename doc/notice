@@ -37,6 +37,8 @@ Le calque a également un tableau de pixel (comme la structure image) qui contie
 	les valeurs re-calculées des pixels de l'image source après modification de l'opacité et/ou du type de mélange
 L'image ouverte n'est jamais modifié : le tableau de pixels de la structure image créé à son chargement reste inchangé.
 C'est le calque auquel est associé l'image qui est modifié. Autrement dit, c'est le tableau calque->pixel qui est re-calculé et non calque->source->pixel.
+-- BUG --
+Affichage des calques dans le menu latéral de l'IHM peu fiable : affichag dans le désordre et id erronés
 
 ----- Opacité et type de mélange -----
 La modification de l'opacité ou du type de mélange d'un calque est directement visible à l'écran (en mode image finale).
@@ -45,7 +47,6 @@ En revanche, à chaque modification, ils sont re-calculés à partir des pixels 
 -- BUG -- 
 Si un calque C est modifié, le calque C+1 au-dessus de ce dernier, ne sera plus à jour : 
 son aperçu dans l'IHM correspondra au calcul précédemment effectué, avant la modification du calque C (avec les valeurs initiales des pixels du calque C).
-
 
 ----- LUT -----
 Idem que opacité et type de mélange : 
@@ -61,3 +62,7 @@ Il y deux modes de vue :
 	image source
 Le mode de vue image finale permet de voir toutes les modifications apportées aux calques (opacité, mélange, lut).
 Le mode de vue image source permet de voir les images sources originales des calques avant toutes modifications (telles que les images ont été ouvertes dans le programme).
+
+----- Image finale -----
+L'image finale correspond au dernier calque de la pile, celui qui est au-dessus de tous les autres : ses pixels sont la synthèse de toutes les modifications apportées aux calques précédents et donc le résultat final de l'image.
+Ce sont donc les pixels de ce dernier calque qui sont enregistrés dans le tableau de pixels de l'image finale.

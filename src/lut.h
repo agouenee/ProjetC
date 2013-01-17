@@ -18,6 +18,7 @@ typedef struct Lut {
 */
 
 void initLUT(Lut* lutable);
+Lut* addLut(int type, Lut* previous);
 void addLum(Lut* lutable, int val);
 void dimLum(Lut* lutable, int val);
 void greyScale(Layer* myLayer);
