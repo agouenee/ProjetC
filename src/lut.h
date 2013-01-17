@@ -26,5 +26,6 @@ void color(Lut* lutable, int R, int V, int B);
 void setModif(Layer* myLayer, Lut* lutable);
 int addContrast(Lut* lutable, int param);
 int dimContrast(Lut* lutable, int val);
+void invert(Lut* lutable);
 
 #endif

@@ -96,6 +96,7 @@ void lutMenu() {
     printf("[p] Appliquer l'effet sépia\n");
     printf("[q] Augmenter le contraste\n");
     printf("[s] Diminuer le contraste\n");
+    printf("[t] Inversion de couleurs\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -366,6 +367,13 @@ int main(void) {
                                 actualiseImage(selected->source->pixel);
                             }
                         }
+                        lutMenu();
+                        break;
+                    case 't' :
+                        printf("Inversion des couleurs\n");
+                        initLUT(&lutable);
+                        invert(&lutable);
+                        setModif(selected, &lutable);
                         lutMenu();
                         break;
 

@@ -181,7 +181,7 @@ int addContrast(Lut* lutable, int val) {
 		}
 		lutable->tabV[i] = newVal;
 
-		// Bleau
+		// Bleu
 		newVal=lutable->tabB[i] - val;
 		if(newVal < 0) {
 			newVal = 0;
@@ -266,6 +266,14 @@ int dimContrast(Lut* lutable, int val) {
 	}
 	return 1;
 }
+void invert(Lut* lutable) {	
+	int i;
+	for (i=0; i<256; i++) {
+		lutable->tabR[i] = 255-lutable->tabR[i];
+		lutable->tabV[i] = 255-lutable->tabV[i];
+		lutable->tabB[i] = 255-lutable->tabB[i];
+	}
+} 
 void color(Lut* lutable, int R, int V, int B)
 {
 	int i;
