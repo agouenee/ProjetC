@@ -8,7 +8,6 @@
 #include <stdlib.h>
 
 #include "layer.h"
-#include "image.h"
 #include "lut.h"
 
 
