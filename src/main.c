@@ -10,6 +10,7 @@
 #include "layer.h"
 #include "image.h"
 #include "lut.h"
+#include "historique.h"
 
 #include "outils.h"
 #include "interface.h"
@@ -36,6 +37,11 @@ Image* finalImg = NULL;
 Lut lutable;
 Lut* appliedLut = NULL;
 Lut* previous = NULL;
+
+/* Historique
+pileHistorique* pile = (pileHistorique*)malloc(sizeof(pileHistorique));
+pile->first = NULL;
+pile->taille = 0;*/
 
 // Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
@@ -263,6 +269,7 @@ int main(void) {
                             selected->appliedLut = appliedLut;*/
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected, &lutable);
+                            //addToHistory(pile, selected);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -505,6 +512,20 @@ int main(void) {
                     printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                 }
                 break;
+            /*
+            case GLUT_KEY_LEFT :
+                tmp = (Layer*)malloc(sizeof(layer));
+                tmp = goBackHistorique(pile, calqueDepart);
+                
+                if(tmp != NULL) {
+                    if(retourneImage(temp, tabInverseEffet) != 0) {
+                        printf("Erreur : invertion tableau \n");
+                    }
+                    actualiseImage(tabInverseEffet);
+                    calqueCourant = temp;
+                }
+                break;
+            */
             default:
                 printf("Touche spéciale non fonctionnelle\n");
         }

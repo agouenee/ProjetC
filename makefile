@@ -11,7 +11,7 @@ LIBS =  -lglimagimp -lglut -lGL -lGLU
 # Compilateur
 CC = gcc
 # Compilateur
-SRC = src/image.c src/layer.c src/lut.c src/main.c
+SRC = src/image.c src/layer.c src/lut.c src/historique.c src/main.c
 
 all:
 	@echo "**** TEST ****"
