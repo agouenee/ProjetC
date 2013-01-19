@@ -8,7 +8,7 @@ typedef struct Layer {
     struct Layer* next;
     float opacity;
     unsigned int mix;
-    //struct Lut* appliedLut;
+    struct Lut* appliedLut;
     unsigned char* pixel; /* pixel = source->pixel, permet modification apparence calque tout en gardant valeurs pixels image originale */
 } Layer;
 

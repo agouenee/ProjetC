@@ -36,7 +36,6 @@ Image* finalImg = NULL;
 // Lut
 Lut lutable;
 Lut* appliedLut = NULL;
-Lut* previous = NULL;
 
 /* Historique
 pileHistorique* pile = (pileHistorique*)malloc(sizeof(pileHistorique));
@@ -259,16 +258,10 @@ int main(void) {
                             initLUT(&lutable);
                             addLum(&lutable, val);
                             // Ajout de la LUT au calque
-                            /*if(selected->appliedLut == NULL) {
-                                previous = NULL;
-                            }
-                            else {
-                                previous = selected->appliedLut;
-                            }
-                            appliedLut = addLut(1, previous);
-                            selected->appliedLut = appliedLut;*/
+                            appliedLut = addLut(1, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            setModif(selected, &lutable);
+                            //setModif(selected, &lutable);
+                            setModif(selected);
                             //addToHistory(pile, selected);
                             // Affichage IHM
                             if(view == 0) {
@@ -292,16 +285,10 @@ int main(void) {
                             initLUT(&lutable);
                             dimLum(&lutable, val);
                             // Ajout de la LUT au calque
-                            /*if(selected->appliedLut == NULL) {
-                                previous = NULL;
-                            }
-                            else {
-                                previous = selected->appliedLut;
-                            }
-                            appliedLut = addLut(2, previous);
-                            selected->appliedLut = appliedLut;*/
+                            appliedLut = addLut(2, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            setModif(selected, &lutable);
+                            //setModif(selected, &lutable);
+                            setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -333,16 +320,10 @@ int main(void) {
                         }
                         else {
                             // Ajout de la LUT au calque
-                            /*if(selected->appliedLut == NULL) {
-                                previous = NULL;
-                            }
-                            else {
-                                previous = selected->appliedLut;
-                            }
-                            appliedLut = addLut(3, previous);
-                            selected->appliedLut = appliedLut;*/
+                            appliedLut = addLut(3, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            setModif(selected, &lutable);
+                            //setModif(selected, &lutable);
+                            setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -367,16 +348,10 @@ int main(void) {
                         }
                         else {
                             // Ajout de la LUT au calque
-                            /*if(selected->appliedLut == NULL) {
-                                previous = NULL;
-                            }
-                            else {
-                                previous = selected->appliedLut;
-                            }
-                            appliedLut = addLut(4, previous);
-                            selected->appliedLut = appliedLut;*/
+                            appliedLut = addLut(4, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            setModif(selected, &lutable);
+                            //setModif(selected, &lutable);
+                            setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -401,16 +376,10 @@ int main(void) {
                         }
                         else {
                             // Ajout de la LUT au calque
-                            /*if(selected->appliedLut == NULL) {
-                                previous = NULL;
-                            }
-                            else {
-                                previous = selected->appliedLut;
-                            }
-                            appliedLut = addLut(5, previous);
-                            selected->appliedLut = appliedLut;*/
+                            appliedLut = addLut(5, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            setModif(selected, &lutable);
+                            //setModif(selected, &lutable);
+                            setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -425,7 +394,18 @@ int main(void) {
                         printf("Inversion des couleurs\n");
                         initLUT(&lutable);
                         invert(&lutable);
-                        setModif(selected, &lutable);
+                        // Ajout de la LUT au calque
+                        appliedLut = addLut(6, &lutable, selected);
+                        // Remplissage d'une image avec les nouveaux pixels modifiés
+                        //setModif(selected, &lutable);
+                        setModif(selected);
+                        // Affichage IHM
+                        if(view == 0) {
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                             actualiseImage(selected->source->pixel);
+                        }
                         lutMenu();
                         break;
 

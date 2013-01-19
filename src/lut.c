@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 #include "layer.h"
+#include "image.h"
 #include "lut.h"
 
 
@@ -20,7 +21,9 @@ void initLUT(Lut* lutable) {
 		lutable->tabB[i] = i;
 	}
 }
-Lut* addLut(int type, Lut* previous) {
+
+// Ajout de la LUT à la liste de LUT du calque
+/*Lut* addLut(int type, Lut* previous) {
 	Lut* newLut;
 
 	newLut= (Lut*)malloc(sizeof(Lut));
@@ -31,6 +34,45 @@ Lut* addLut(int type, Lut* previous) {
 	}
 	newLut->next= NULL;
 	
+	return newLut;
+}*/
+Lut* addLut(int type, Lut* lutable, Layer* myLayer) {
+	Lut* newLut;
+	newLut = (Lut*) malloc(sizeof(Lut));
+	if(newLut == NULL) {
+		// Problème allocation mémoire structure LUT
+		return NULL;
+	}
+	else {
+		newLut->type = type;
+		/*if(previous != NULL) {
+			previous->next= newLut;
+		}
+		newLut->next= NULL;*/
+		// Remplissage tableaux R, V, B de newLUT avec les valeurs de lutable
+		int i;
+		for(i = 0; i < 256; i++) {
+			newLut->tabR[i] = lutable->tabR[i];
+			newLut->tabV[i] = lutable->tabV[i];
+			newLut->tabB[i] = lutable->tabB[i];
+		}
+		// Liaison de la nouvelle LUT avec les autres LUT du calque
+		if(myLayer->appliedLut != NULL) {
+			Lut* appliedLut = myLayer->appliedLut;
+			while(appliedLut->next != NULL) {
+				appliedLut = appliedLut->next;
+			}
+			newLut->next = NULL;
+			newLut->prev = appliedLut;
+			appliedLut->next = newLut;
+			//return myLayer->appliedLut;
+		}
+		else {
+			newLut->prev = NULL;
+			newLut->next = NULL;
+			myLayer->appliedLut = newLut;
+		}
+	}	
 	return newLut;
 }
 
@@ -301,17 +343,37 @@ void color(Lut* lutable, int R, int V, int B)
 }
 
 // Appliquer les modifications à l'image grâce à la LUT
-void setModif(Layer* myLayer, Lut* lutable)
+/*void setModif(Layer* myLayer, Lut* lutable)
 {
 	int i;
 	int length = (myLayer->source->height) * (myLayer->source->width) * 3;
 	for(i=0; i<length; i+=3) {
-		/*myLayer->source->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
-		myLayer->source->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
-		myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);*/
+		//myLayer->source->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
+		//myLayer->source->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
+		//myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);
 
 		myLayer->pixel[i]=(unsigned char)(lutable->tabR[myLayer->pixel[i]]);
 		myLayer->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->pixel[i+1]]);
 		myLayer->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->pixel[i+2]]);
+	}
+}*/
+void setModif(Layer* myLayer) {
+	// Réinitialisation du calque en vue de l'application de l'ensemble des LUT (pour éviter que les LUT précédemment appliquées soient appliquées une nouvelle fois)
+	int j;
+	for(j = 0; j < myLayer->source->width * myLayer->source->height * 3; j++) {
+		myLayer->pixel[j] = myLayer->source->pixel[j];
+	}
+	// Parcours de la liste de LUT du calque
+	Lut* appliedLut = myLayer->appliedLut;
+	while(appliedLut != NULL) {
+		// Application de la LUT au calque (calcul des pixels de sortie)
+		int i;
+		int length = (myLayer->source->height) * (myLayer->source->width) * 3;
+		for(i=0; i<length; i+=3) {
+			myLayer->pixel[i]=(unsigned char)(appliedLut->tabR[myLayer->pixel[i]]);
+			myLayer->pixel[i+1]=(unsigned char)(appliedLut->tabV[myLayer->pixel[i+1]]);
+			myLayer->pixel[i+2]=(unsigned char)(appliedLut->tabB[myLayer->pixel[i+2]]);
+		}
+		appliedLut = appliedLut->next;
 	}
 }

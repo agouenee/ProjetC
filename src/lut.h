@@ -7,6 +7,7 @@ typedef struct Lut {
 	unsigned char tabV[256];
 	unsigned char tabB[256];
 	struct Lut* next;
+	struct Lut* prev;
 }Lut;
 
 /* ---- TYPES ----
@@ -15,16 +16,19 @@ typedef struct Lut {
 	[3] sepia
 	[4] addContrast
 	[5] dimContrast
+	[6] invert
 */
 
 void initLUT(Lut* lutable);
-Lut* addLut(int type, Lut* previous);
+//Lut* addLut(int type, Lut* previous);
+Lut* addLut(int type, Lut* lutable, Layer* myLayer);
 void addLum(Lut* lutable, int val);
 void dimLum(Lut* lutable, int val);
 void greyScale(Layer* myLayer);
 int sepia (Lut* lutable);
 void color(Lut* lutable, int R, int V, int B);
-void setModif(Layer* myLayer, Lut* lutable);
+//void setModif(Layer* myLayer, Lut* lutable);
+void setModif(Layer* myLayer);
 int addContrast(Lut* lutable, int param);
 int dimContrast(Lut* lutable, int val);
 void invert(Lut* lutable);
