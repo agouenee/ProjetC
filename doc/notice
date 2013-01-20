@@ -49,6 +49,7 @@ L'application d'une LUT à un calque est directement visible à l'écran (en mod
 Les nouveaux pixels calculés suite à l'application d'une LUT sont enregistrés dans le tableau de pixel du calque et non de l'image source.
 A l'application d'une LUT, les pixels du calque ne sont pas re-calculés à partir des pixels de l'image source, c'est-à-dire que les LUT précédemment appliquées au calque sont prises en compte si une nouvelle LUT est appliquée (ex: si on diminue la luminosité d'une image, puis qu'on lui applique l'effet sépia, l'image finale visible à l'écran correspondra à la combinaison des deux LUT).
 Toutes les LUT ajoutées à un calque sont liées à celui-ci sous forme de liste doublement chaînée. La fonction qui applique les effets des LUT au calque parcourt l'ensemble de la liste de LUT liées au calque et, pour chacune d'entre elles, calcule les nouveaux pixels du calque. Ce système permet d'annuler l'effet de la dernière LUT ajoutée si on décide de la supprimée.
+Chaque LUT possède un numéro (type) qui permet de les identifiées lors de l'application des effets, notamment pour les LUT niveaux de gris (greyScale) et sépia.
 -- BUG -- 
 Si on modifie l'opacité du calque ou son type de mélange après avoir appliqué une LUT, cette dernière n'est plus appliquée à l'image car les pixels sont recalculés à partir de l'image source (donc sans la LUT).
 

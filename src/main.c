@@ -260,7 +260,6 @@ int main(void) {
                             // Ajout de la LUT au calque
                             appliedLut = addLut(1, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            //setModif(selected, &lutable);
                             setModif(selected);
                             //addToHistory(pile, selected);
                             // Affichage IHM
@@ -287,7 +286,6 @@ int main(void) {
                             // Ajout de la LUT au calque
                             appliedLut = addLut(2, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            //setModif(selected, &lutable);
                             setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
@@ -301,7 +299,11 @@ int main(void) {
                         break;
                     case 'o' :
                         printf("Effet noir et blanc\n");
-                        greyScale(selected);
+                        initLUT(&lutable);
+                        // Ajout de la LUT au calque
+                        appliedLut = addLut(7, &lutable, selected);
+                        // Remplissage d'une image avec les nouveaux pixels modifiés
+                        setModif(selected);
                         // Affichage IHM
                         if(view == 0) {
                             actualiseImage(selected->pixel);
@@ -313,7 +315,6 @@ int main(void) {
                         break;
                     case 'p' :
                         printf("Effet sepia\n");
-                        greyScale(selected);
                         int sepiaEffect = sepia(&lutable);
                         if(sepiaEffect == 0) {
                             printf(" Erreur effet sepia non effectue\n");
@@ -322,7 +323,6 @@ int main(void) {
                             // Ajout de la LUT au calque
                             appliedLut = addLut(3, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            //setModif(selected, &lutable);
                             setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
@@ -350,7 +350,6 @@ int main(void) {
                             // Ajout de la LUT au calque
                             appliedLut = addLut(4, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            //setModif(selected, &lutable);
                             setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
@@ -378,7 +377,6 @@ int main(void) {
                             // Ajout de la LUT au calque
                             appliedLut = addLut(5, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
-                            //setModif(selected, &lutable);
                             setModif(selected);
                             // Affichage IHM
                             if(view == 0) {
@@ -397,7 +395,6 @@ int main(void) {
                         // Ajout de la LUT au calque
                         appliedLut = addLut(6, &lutable, selected);
                         // Remplissage d'une image avec les nouveaux pixels modifiés
-                        //setModif(selected, &lutable);
                         setModif(selected);
                         // Affichage IHM
                         if(view == 0) {

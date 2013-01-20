@@ -374,6 +374,21 @@ void setModif(Layer* myLayer) {
 			myLayer->pixel[i+1]=(unsigned char)(appliedLut->tabV[myLayer->pixel[i+1]]);
 			myLayer->pixel[i+2]=(unsigned char)(appliedLut->tabB[myLayer->pixel[i+2]]);
 		}
+		// Gestion du cas particulier de l'effet noir et blanc
+		if(appliedLut->type == 7) {
+			greyScale(myLayer);
+		}
+		// Gestion de l'effet sépia
+		if(appliedLut->type == 3) {
+			greyScale(myLayer);
+			// Application de la LUT au calque (calcul des pixels de sortie)
+			int j;
+			for(j=0; j<length; j+=3) {
+				myLayer->pixel[j]=(unsigned char)(appliedLut->tabR[myLayer->pixel[j]]);
+				myLayer->pixel[j+1]=(unsigned char)(appliedLut->tabV[myLayer->pixel[j+1]]);
+				myLayer->pixel[j+2]=(unsigned char)(appliedLut->tabB[myLayer->pixel[j+2]]);
+			}
+		}
 		appliedLut = appliedLut->next;
 	}
 }

@@ -17,6 +17,7 @@ typedef struct Lut {
 	[4] addContrast
 	[5] dimContrast
 	[6] invert
+	[7] greyScale
 */
 
 void initLUT(Lut* lutable);
