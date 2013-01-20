@@ -141,21 +141,17 @@ Layer* addEmptyLayer(unsigned int id, Layer* imgRoot, Layer* selected) {
 
 // Modification de l'opacité d'un calque (CAL_3)
 Layer* modifLayerOpacity(Layer* selected, float opacity) {
-    //if(selected->prev != NULL) {
-        if(opacity >= 0.0 && opacity <= 1.0) {
+    if(opacity >= 0.0 && opacity <= 1.0) {
             selected->opacity = opacity;
-        }
-    //}
+    }
     return selected;
 }
 
 // Modification du type de mélange (CAL_4)
 Layer* modifLayerMix(Layer* selected, unsigned int mix) {
-    //if(selected->prev != NULL) {
-        if(mix == 0 || mix == 1) {
+    if(mix == 0 || mix == 1) {
             selected->mix = mix;
-        }
-    //}
+    }
     return selected;
 }
 
@@ -197,6 +193,11 @@ Layer* modifLayer(Layer* selected) {
 
 // Supression d'un calque (CAL_5)
 int suppLayer(Layer* selected) {
+    // Suppression des LUT (s'il y en a)
+    if(selected->appliedLut == NULL) {
+        free(selected->appliedLut);
+        selected->appliedLut = NULL;
+    }
     // S'il n'y a pas de calque précédent
     if(selected->prev == NULL) {
         // S'il n'y a pas de calque suivant, le calque sélectionné est le calque initial, tout seul

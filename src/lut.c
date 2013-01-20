@@ -45,10 +45,6 @@ Lut* addLut(int type, Lut* lutable, Layer* myLayer) {
 	}
 	else {
 		newLut->type = type;
-		/*if(previous != NULL) {
-			previous->next= newLut;
-		}
-		newLut->next= NULL;*/
 		// Remplissage tableaux R, V, B de newLUT avec les valeurs de lutable
 		int i;
 		for(i = 0; i < 256; i++) {
@@ -65,7 +61,6 @@ Lut* addLut(int type, Lut* lutable, Layer* myLayer) {
 			newLut->next = NULL;
 			newLut->prev = appliedLut;
 			appliedLut->next = newLut;
-			//return myLayer->appliedLut;
 		}
 		else {
 			newLut->prev = NULL;
@@ -81,6 +76,7 @@ int suppLUT(Lut* appliedLut, Layer* myLayer) {
 		return 0;
 	}
 	if(appliedLut->prev == NULL && appliedLut->next == NULL) {
+		free(appliedLut);
 		myLayer->appliedLut = NULL;
 	}
 	else {
@@ -89,6 +85,7 @@ int suppLUT(Lut* appliedLut, Layer* myLayer) {
 		}
 		appliedLut->prev->next = NULL;
 		appliedLut->prev = NULL;
+		free(appliedLut);
 	}
 	return 1;
 }

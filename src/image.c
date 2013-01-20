@@ -74,7 +74,6 @@ Image* openImage(char* path) {
                     fread(img->pixel, sizeof(unsigned char), (img->width)*(img->height)*3, file);
                 }
             }
-            // fflush(stdin);
             fclose(file);
             return img;
         }
@@ -133,6 +132,7 @@ void saveFinalImage(Image* img, char* fileName) {
     FILE* finalImgFile = fopen(fileName, "w");
     if(finalImgFile == NULL) {
         // Erreur ouverture fichier
+        return;
     }
     // Ecriture des données de l'image
     else {
@@ -141,5 +141,6 @@ void saveFinalImage(Image* img, char* fileName) {
         // Ecriture des pixels
         fwrite(img->pixel, sizeof(unsigned char), (img->height)*(img->width)*3, finalImgFile);
     }
+    fflush(finalImgFile);
     fclose(finalImgFile);
 }

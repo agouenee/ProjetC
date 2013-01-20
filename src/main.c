@@ -104,6 +104,7 @@ void lutMenu() {
     printf("[q] Augmenter le contraste\n");
     printf("[s] Diminuer le contraste\n");
     printf("[t] Inversion de couleurs\n");
+    printf("[u] Suppression de la dernière LUT\n");
     printf("[r] Retour au menu principal\n");
     printf("\n--------------------------------------------------\n\n");
 }
@@ -457,6 +458,11 @@ int main(void) {
             case 27:
                 printf("escap) Fin du programme\n");
                 // Désallocation de la mémoire (IHM_4)
+                free(appliedLut);
+                free(tmp);
+                free(finalImg);
+                free(fileNameRoot);
+                free(fileName);
                 free(imgRoot);
                 free(imgPPM);
                 free(empty);
