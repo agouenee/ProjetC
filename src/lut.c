@@ -75,6 +75,23 @@ Lut* addLut(int type, Lut* lutable, Layer* myLayer) {
 	}	
 	return newLut;
 }
+// Supprimer la dernière LUT de la liste (dernière LUT appliquée)
+int suppLUT(Lut* appliedLut, Layer* myLayer) {
+	if(appliedLut == NULL) {
+		return 0;
+	}
+	if(appliedLut->prev == NULL && appliedLut->next == NULL) {
+		myLayer->appliedLut = NULL;
+	}
+	else {
+		while(appliedLut->next != NULL) {
+			appliedLut = appliedLut->next;
+		}
+		appliedLut->prev->next = NULL;
+		appliedLut->prev = NULL;
+	}
+	return 1;
+}
 
 //Augmenter la luminosité
 void addLum(Lut* lutable, int val) 

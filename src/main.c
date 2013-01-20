@@ -405,10 +405,30 @@ int main(void) {
                         }
                         lutMenu();
                         break;
+                    case 'u' :
+                        printf("Suppression de la dernière LUT appliquée\n");
+                        // Suppression de la LUT
+                        test = suppLUT(selected->appliedLut, selected);
+                        if(test == 1) {
+                            // Mise à jour du calque (avec une LUT en moins)
+                            setModif(selected);
+                        }
+                        else {
+                            printf("Aucune LUT n'est appliquée à ce calque !\n");
+                        }
+                        // Affichage IHM
+                        if(view == 0) {
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                             actualiseImage(selected->source->pixel);
+                        }
+                        lutMenu();
+                        break;
 
             case '3':
                 // Changer de mode de vue (IHM_1)
-                printf("Mode de vue \n");
+                printf("Mode de vue : ");
                 if(view == 0) { /* Mode de vue "image finale" (par défaut) */
                     printf("Image source \n");
                     view = 1;
