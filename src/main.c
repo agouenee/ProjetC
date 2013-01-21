@@ -294,6 +294,7 @@ int main(void) {
                             appliedLut = addLut(2, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -311,6 +312,7 @@ int main(void) {
                         appliedLut = addLut(7, &lutable, selected);
                         // Remplissage d'une image avec les nouveaux pixels modifiés
                         setModif(selected);
+                        addToHistory(pile, selected, 1);
                         // Affichage IHM
                         if(view == 0) {
                             actualiseImage(selected->pixel);
@@ -331,6 +333,7 @@ int main(void) {
                             appliedLut = addLut(3, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -358,6 +361,7 @@ int main(void) {
                             appliedLut = addLut(4, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -385,6 +389,7 @@ int main(void) {
                             appliedLut = addLut(5, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -403,6 +408,7 @@ int main(void) {
                         appliedLut = addLut(6, &lutable, selected);
                         // Remplissage d'une image avec les nouveaux pixels modifiés
                         setModif(selected);
+                        addToHistory(pile, selected, 1);
                         // Affichage IHM
                         if(view == 0) {
                             actualiseImage(selected->pixel);
@@ -530,7 +536,7 @@ int main(void) {
                         }
                         lastAction = 2;
                     }
-                    if(pile->first->code == 3) {
+                    else if(pile->first->code == 3) {
                         lastAction = 3;
                     }
                 }

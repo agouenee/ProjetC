@@ -70,8 +70,9 @@ maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
 			tmp = modifLayer(tmp);
 		}
 	}
-	returnMaillon->next = NULL;
 	pile->first = returnMaillon->next;
+	returnMaillon->next = NULL;
 	pile->taille--;
+	
 	return returnMaillon;
 }
