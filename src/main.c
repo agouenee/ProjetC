@@ -464,8 +464,6 @@ int main(void) {
             case 27:
                 printf("escap) Fin du programme\n");
                 // Désallocation de la mémoire (IHM_4)
-                free(appliedLut);
-                free(tmp);
                 free(finalImg);
                 free(fileNameRoot);
                 free(fileName);
