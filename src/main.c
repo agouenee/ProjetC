@@ -522,6 +522,7 @@ int main(void) {
                 }
                 break;
             case GLUT_KEY_LEFT :
+            // Undo historique
                 if(pile->taille != 0) {
                     if(pile->first->code == 2) {
                         if(selected->prev != NULL) {
