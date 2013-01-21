@@ -17,11 +17,14 @@ int addToHistory(pileHistorique *pile, Layer* selected, int code) {
 		return 0;
 	}
 
+	// Ajout du maillon à la pile
 	m->next = pile->first;
 	m->myLayer = selected;
 	m->code = code;
 
+	// Le maillon devient mon premier élément
 	pile->first=m;
+	// Augmentation de la taille de la pile
 	pile->taille++;
 
 	return 1;
@@ -38,6 +41,7 @@ maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
 		return NULL;
 	}
 
+	// On doit enlever le premier maillon de la pile
 	maillonHistorique* returnMaillon;
 	returnMaillon = pile->first;
 
@@ -46,6 +50,7 @@ maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
 		tmp = tmp->next;
 	}
 
+	// Code application de LUT --> on la supprime
 	if(pile->first->code == 1) {
 		test = suppLUT(tmp->appliedLut, tmp);
 		if(test == 1) {
@@ -53,10 +58,12 @@ maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
 			setModif(tmp);
 		}
 	}
+	// Code ajout de calque --> on le supprime
 	else if(pile->first->code == 2) {
 		test = suppLayer(tmp);
 		
 	}
+	// Code modification du type de mélange --> on applique l'autre melange
 	else if (pile->first->code == 3) {
 		if(tmp->mix == 0) {
 			tmp = modifLayerMix(tmp, 1);
@@ -67,6 +74,7 @@ maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
 			tmp = modifLayer(tmp);
 		}
 	}
+	// On depile notre element
 	pile->first = returnMaillon->next;
 	returnMaillon->next = NULL;
 	pile->taille--;

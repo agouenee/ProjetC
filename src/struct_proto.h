@@ -7,9 +7,10 @@ typedef struct maillonHistorique {
 }maillonHistorique;
 
 /*
-	codes
+	---- Codes ----
 	[1] - Ajout de LUT
 	[2] - Ajout de calque
+	[3] - Modification du type de mélange
 */
 
 typedef struct pileHistorique {
@@ -89,7 +90,6 @@ void addLum(Lut* lutable, int val);
 void dimLum(Lut* lutable, int val);
 void greyScale(Layer* myLayer);
 int sepia (Lut* lutable);
-void color(Lut* lutable, int R, int V, int B);
 void setModif(Layer* myLayer);
 int addContrast(Lut* lutable, int param);
 int dimContrast(Lut* lutable, int val);

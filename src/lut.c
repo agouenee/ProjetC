@@ -149,8 +149,10 @@ void greyScale(Layer* myLayer) {
 		int r = myLayer->pixel[i];
 		int v = myLayer->pixel[i+1];
 		int b = myLayer->pixel[i+2];
+		// Pour obtenir du gris on commence par ajouter les 3 niveaux de couleur et on les divise par 3
 		int grey = (r + v + b) / 3;
-
+		// On affecte la valeur obtenue aux niveaux de couleurs
+		// R, V et B ont donc la même valeur -> notre pixel est gris
 		r = v = b = grey;
 
 		if (r>255) 
@@ -173,7 +175,8 @@ int sepia(Lut* lutable) {
 	if(lutable == NULL) {
 		return 0;
 	}
-	
+	// On passe en niveau de gris avant de faire l'effet sepia
+	// On applique ensuite une coloration propre au sepia
 	for(i=0; i<256; i++) {
 		// Rouge
 		valR= i + 80;
@@ -205,7 +208,7 @@ int addContrast(Lut* lutable, int val) {
 	if(lutable == NULL) {
 		return 0;
 	}
-	
+	// Couleurs claires -> on diminue leur valeur
 	for(i=0; i<128; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] - val;
@@ -228,6 +231,7 @@ int addContrast(Lut* lutable, int val) {
 		}
 		lutable->tabB[i] = newVal;
 	}
+	// Couleurs foncées -> on augmente leur valeur
 	for(i=128; i<255; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] + val;
@@ -259,7 +263,7 @@ int dimContrast(Lut* lutable, int val) {
 	if(lutable == NULL) {
 		return 0;
 	}
-	
+	// Couleurs claires -> on augmente leur valeur
 	for(i=0; i<128; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] + val;
@@ -282,6 +286,7 @@ int dimContrast(Lut* lutable, int val) {
 		}
 		lutable->tabB[i] = newVal;
 	}
+	// Couleurs foncées -> on diminue leur valeur
 	for(i=128; i<255; i++) {
 		// Rouge
 		newVal=lutable->tabR[i] - val;
@@ -312,32 +317,6 @@ void invert(Lut* lutable) {
 		lutable->tabR[i] = 255-lutable->tabR[i];
 		lutable->tabV[i] = 255-lutable->tabV[i];
 		lutable->tabB[i] = 255-lutable->tabB[i];
-	}
-} 
-void color(Lut* lutable, int R, int V, int B)
-{
-	int i;
-	for (i=0; i<256; i++) {		
-	if((lutable->tabR[i]+R)<0)
-			lutable->tabR[i] = 0;
-		else if((lutable->tabR[i]+R)>255)
-			lutable->tabR[i] = 255;
-		else
-			lutable->tabR[i] = lutable->tabR[i]+R;
-			
-		if((lutable->tabV[i]+V)<0)
-			lutable->tabV[i] = 0;
-		else if((lutable->tabV[i]+V)>255)
-			lutable->tabV[i] = 255;
-		else
-			lutable->tabV[i] = lutable->tabV[i]+V;
-			
-		if((lutable->tabB[i]+B)<0)
-			lutable->tabB[i] = 0;
-		else if((lutable->tabB[i]+B)>255)
-			lutable->tabB[i] = 255;
-		else
-			lutable->tabB[i] = lutable->tabB[i]+B;
 	}
 }
 
