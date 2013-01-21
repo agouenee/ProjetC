@@ -37,11 +37,6 @@ Image* finalImg = NULL;
 Lut lutable;
 Lut* appliedLut = NULL;
 
-/* Historique
-pileHistorique* pile = (pileHistorique*)malloc(sizeof(pileHistorique));
-pile->first = NULL;
-pile->taille = 0;*/
-
 // Initialisation des variables de saisie (variables que l'utilisateur peut modifier dans le programme)
 char* fileNameRoot = NULL;
 char* fileName = NULL;
@@ -123,6 +118,13 @@ int main(void) {
     Layer* imgRoot = addImgLayer(path, idLayer, opacity, mix, NULL);
     // Mise à jour du calque courant
     Layer* selected = imgRoot;
+
+    // Historique
+    pileHistorique* pile = (pileHistorique*)malloc(sizeof(pileHistorique));
+    maillonHistorique* m = (maillonHistorique*)malloc(sizeof(maillonHistorique));
+    int lastAction;
+    initHistory(pile);
+
     mainMenu();
 
     // Interruptions clavier (c: caractère saisi; x,y: coordonnées du curseur)
@@ -150,6 +152,7 @@ int main(void) {
                         actualiseImage(imgPPM->source->pixel);
                         // Mise à jour du calque courant
                         selected = imgPPM;
+                        addToHistory(pile, selected, 2);
                         layerMenu();
                         break;
                     case 'b':
@@ -175,6 +178,7 @@ int main(void) {
                             else {
                                 actualiseImage(selected->source->pixel);
                             }
+                            addToHistory(pile, selected, 3);
                         }
                         else {
                             printf("    Erreur : valeur incorrecte\n");
@@ -211,10 +215,12 @@ int main(void) {
                         // Ajout du calque
                         empty = addEmptyLayer(++idLayer, imgRoot, selected);
                         cptLayer++;
+                        addToHistory(pile, selected, 2);
                         // Affichage dans IHM
                         actualiseImage(empty->pixel);
                         // Mise à jour du calque courant
                         selected = empty;
+                        addToHistory(pile, selected, 2);
                         layerMenu();
                         break;
                     case 'e':
@@ -262,7 +268,7 @@ int main(void) {
                             appliedLut = addLut(1, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
-                            //addToHistory(pile, selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -288,6 +294,7 @@ int main(void) {
                             appliedLut = addLut(2, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -305,6 +312,7 @@ int main(void) {
                         appliedLut = addLut(7, &lutable, selected);
                         // Remplissage d'une image avec les nouveaux pixels modifiés
                         setModif(selected);
+                        addToHistory(pile, selected, 1);
                         // Affichage IHM
                         if(view == 0) {
                             actualiseImage(selected->pixel);
@@ -325,6 +333,7 @@ int main(void) {
                             appliedLut = addLut(3, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -352,6 +361,7 @@ int main(void) {
                             appliedLut = addLut(4, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -379,6 +389,7 @@ int main(void) {
                             appliedLut = addLut(5, &lutable, selected);
                             // Remplissage d'une image avec les nouveaux pixels modifiés
                             setModif(selected);
+                            addToHistory(pile, selected, 1);
                             // Affichage IHM
                             if(view == 0) {
                                 actualiseImage(selected->pixel);
@@ -397,6 +408,7 @@ int main(void) {
                         appliedLut = addLut(6, &lutable, selected);
                         // Remplissage d'une image avec les nouveaux pixels modifiés
                         setModif(selected);
+                        addToHistory(pile, selected, 1);
                         // Affichage IHM
                         if(view == 0) {
                             actualiseImage(selected->pixel);
@@ -513,20 +525,47 @@ int main(void) {
                     printf("    Calque sélectionné: calque %d (opacité: %f)\n", selected->id, selected->opacity);
                 }
                 break;
-            /*
             case GLUT_KEY_LEFT :
-                tmp = (Layer*)malloc(sizeof(layer));
-                tmp = goBackHistorique(pile, calqueDepart);
-                
-                if(tmp != NULL) {
-                    if(retourneImage(temp, tabInverseEffet) != 0) {
-                        printf("Erreur : invertion tableau \n");
+                if(pile->taille != 0) {
+                    if(pile->first->code == 2) {
+                        if(selected->prev != NULL) {
+                            tmp = selected->prev;
+                        }
+                        else {
+                            tmp = selected->next;
+                        }
+                        lastAction = 2;
                     }
-                    actualiseImage(tabInverseEffet);
-                    calqueCourant = temp;
+                    else if(pile->first->code == 3) {
+                        lastAction = 3;
+                    }
                 }
+                m = goBackHistorique(pile, imgRoot);
+                if(m != NULL) {
+                    if(lastAction == 2) {
+                        selected = tmp;
+                         // Affichage dans IHM
+                        if(view == 0) {
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            actualiseImage(selected->source->pixel);
+                        }
+                    }
+                    else if(lastAction == 3) {
+                        if(view == 0) {
+                            actualiseImage(selected->pixel);
+                        }
+                        else {
+                            actualiseImage(selected->source->pixel);
+                        }
+
+                    }
+                    printf("Retour en arriere effectue\n");
+                    free(m);
+                }
+                
                 break;
-            */
             default:
                 printf("Touche spéciale non fonctionnelle\n");
         }

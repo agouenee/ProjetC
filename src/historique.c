@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "image.h"
+#include "lut.h"
 #include "layer.h"
 #include "historique.h"
 
@@ -10,63 +11,68 @@ void initHistory(pileHistorique* pile)
 	pile->taille = 0;
 }
 
-int addToHistory(pileHistorique* pile, Layer* myLayer)
-{
-	int i;
+int addToHistory(pileHistorique *pile, Layer* selected, int code) {
 
 	maillonHistorique* m;
-
-	Image* newImage = (Image*)malloc(sizeof(Image));
-	if(newImage == NULL) {
-		printf("Erreur allocation nouvelle image\n");
-		return 0;
-	}
-	newImage->height = myLayer->source->height;
-	newImage->width = myLayer->source->width;
-
-	int length = newImage->height * newImage->width * 3;
-	newImage->pixel = (unsigned char*)malloc(length*sizeof(unsigned char));
-	if(newImage->pixel == NULL) {
-		printf("Erreur allocation du tableau de pixels de l'image\n");
-		return 0;
-	}
-	
-	for(i=0; i<length; i++) {
-		newImage->pixel[i] = myLayer->source->pixel[i];
-	}
-
-	Layer* newLayer = (Layer*)malloc(sizeof(Layer));
-	if(newLayer == NULL) {
-		printf("Erreur allocation nouveau calque\n");
-		return 0;
-	}
-	newLayer->source =  (Image*)malloc(sizeof(Image));
-	if(newLayer->source == NULL) {
-		printf("Erreur allocation nouvelle image \n");
-		return 0;
-	}
-	newLayer->source->pixel = (unsigned char*)malloc(sizeof(unsigned char));
-	newLayer->source->pixel = newImage->pixel;
-	newLayer->source->width = newImage->width;
-	newLayer->source->height = newImage->height;
-
-	newLayer->opacity = myLayer->opacity;
-	newLayer->mix = myLayer->mix;
-	newLayer->id = myLayer->id;
-	
-	newLayer->prev = myLayer->prev;
-	newLayer->next = myLayer->next;
-
-
-	// Ajouter le maillon à la pile
 	m = (maillonHistorique*)malloc(sizeof(maillonHistorique));
-	m->myLayer = (Layer*)malloc(sizeof(Layer));
-	
-	m->myLayer = newLayer;
+	if(m == NULL) {
+		printf("Probleme allocation nouveau maillon\n");
+		return 0;
+	}
+
 	m->next = pile->first;
-	pile->first = m;
+	m->myLayer = selected;
+	m->code = code;
+
+	pile->first=m;
 	pile->taille++;
-	
-	free(newImage);
+
 	return 1;
+}
+
+maillonHistorique* goBackHistorique(pileHistorique* pile, Layer* first)
+{
+	Layer* tmp = (Layer*)malloc(sizeof(Layer));
+	int test = 0;
+	
+	// Si la taille de la pile est à 0 on ne peut pas retourner en arrière
+	if (pile->taille == 0) {
+		printf("L'historique est vide\n");
+		return NULL;
+	}
+
+	maillonHistorique* returnMaillon;
+	returnMaillon = pile->first;
+
+	tmp = first;
+	while(returnMaillon->myLayer->id != tmp->id && tmp->next != NULL) {
+		tmp = tmp->next;
+	}
+
+	if(pile->first->code == 1) {
+		test = suppLUT(tmp->appliedLut, tmp);
+		if(test == 1) {
+			// Mise à jour du calque (avec une LUT en moins)
+			setModif(tmp);
+		}
+	}
+	else if(pile->first->code == 2) {
+		test = suppLayer(tmp);
+		
+	}
+	else if (pile->first->code == 3) {
+		if(tmp->mix == 0) {
+			tmp = modifLayerMix(tmp, 1);
+			tmp = modifLayer(tmp);
+		}
+		else {
+			tmp = modifLayerMix(tmp, 0);
+			tmp = modifLayer(tmp);
+		}
+	}
+	pile->first = returnMaillon->next;
+	returnMaillon->next = NULL;
+	pile->taille--;
+	
+	return returnMaillon;
 }
