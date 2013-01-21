@@ -19,8 +19,7 @@ Pixels de l'image
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "layer.h"
-#include "image.h"
+#include "struct_proto.h"
 
 // Chargement et ouverture de l'image (IM_1)
 Image* openImage(char* path) {

@@ -7,9 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "layer.h"
-#include "image.h"
-#include "lut.h"
+#include "struct_proto.h"
 
 
 // Initialisation de la LUT
@@ -23,19 +21,6 @@ void initLUT(Lut* lutable) {
 }
 
 // Ajout de la LUT à la liste de LUT du calque
-/*Lut* addLut(int type, Lut* previous) {
-	Lut* newLut;
-
-	newLut= (Lut*)malloc(sizeof(Lut));
-	newLut->type = type;
-
-	if(previous != NULL) {
-		previous->next= newLut;
-	}
-	newLut->next= NULL;
-	
-	return newLut;
-}*/
 Lut* addLut(int type, Lut* lutable, Layer* myLayer) {
 	Lut* newLut;
 	newLut = (Lut*) malloc(sizeof(Lut));
@@ -357,20 +342,6 @@ void color(Lut* lutable, int R, int V, int B)
 }
 
 // Appliquer les modifications à l'image grâce à la LUT
-/*void setModif(Layer* myLayer, Lut* lutable)
-{
-	int i;
-	int length = (myLayer->source->height) * (myLayer->source->width) * 3;
-	for(i=0; i<length; i+=3) {
-		//myLayer->source->pixel[i]=(unsigned char)(lutable->tabR[myLayer->source->pixel[i]]);
-		//myLayer->source->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->source->pixel[i+1]]);
-		//myLayer->source->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->source->pixel[i+2]]);
-
-		myLayer->pixel[i]=(unsigned char)(lutable->tabR[myLayer->pixel[i]]);
-		myLayer->pixel[i+1]=(unsigned char)(lutable->tabV[myLayer->pixel[i+1]]);
-		myLayer->pixel[i+2]=(unsigned char)(lutable->tabB[myLayer->pixel[i+2]]);
-	}
-}*/
 void setModif(Layer* myLayer) {
 	// Réinitialisation du calque en vue de l'application de l'ensemble des LUT (pour éviter que les LUT précédemment appliquées soient appliquées une nouvelle fois)
 	int j;

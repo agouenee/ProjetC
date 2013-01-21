@@ -7,11 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "layer.h"
-#include "image.h"
-#include "lut.h"
-#include "historique.h"
-
+#include "struct_proto.h"
 #include "outils.h"
 #include "interface.h"
 

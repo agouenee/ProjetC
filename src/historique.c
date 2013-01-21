@@ -1,9 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "image.h"
-#include "lut.h"
-#include "layer.h"
-#include "historique.h"
+#include "struct_proto.h"
 
 void initHistory(pileHistorique* pile)
 {

@@ -4,7 +4,6 @@
 /*************************************************/
 
 // Calques de mêmes dimensions que l'image PPM source ouverte
-// S'insèrent toujours en fin de liste ???
 // Calque vide = image source totalement blanche, opacité nulle, mélange multiplicatif
 
 /* CARACTERISTIQUES **************
@@ -20,8 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "image.h"
-#include "layer.h"
+#include "struct_proto.h"
 
 // Ajout d'un calque image
 Layer* addImgLayer(char* path, unsigned int id, float opacity, unsigned int mix, Layer* selected) {
